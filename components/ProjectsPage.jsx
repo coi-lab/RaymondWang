@@ -5,10 +5,10 @@ const ProjectsPage = () => {
   // --- CONFIGURATION: Update your file names here ---
   // Make sure these files are in your 'public' folder
   const media = {
-    robotImage: "/images/smaller_vehicle_image.jpg",   // Main Hero Image
-    mainDemoVideo: "/images/main_video.mp4",           // Main Video at bottom
-    techImage1: "/images/chassis_image.png",            // Technical Image #1 (Left)
-    techImage2: "/images/pcb_image.png"             // Technical Image #2 (Right)
+    robotImage: "./images/smaller_vehicle_image.jpg",   // Main Hero Image
+    mainDemoVideo: "./images/main_video.mp4",           // Main Video at bottom
+    techImage1: "./images/chassis_image.png",            // Technical Image #1 (Left)
+    techImage2: "./images/pcb_image.png"             // Technical Image #2 (Right)
   };
 
   const results = [

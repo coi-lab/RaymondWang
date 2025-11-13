@@ -3,7 +3,7 @@ import { Download, FileText } from 'lucide-react';
 
 const ResumePage = () => {
   // This points to the file in your 'public' folder
-  const resumeUrl = "/Raymond_General_Resume.pdf"; 
+  const resumeUrl = "./Raymond_General_Resume.pdf"; 
 
   return (
     <div className="space-y-8">
