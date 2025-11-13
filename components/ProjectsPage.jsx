@@ -2,13 +2,15 @@ import React from 'react';
 import { Lightbulb, Play, Image as ImageIcon, ZoomIn } from 'lucide-react';
 
 const ProjectsPage = () => {
-  // --- CONFIGURATION: Update your file names here ---
-  // Make sure these files are in your 'public' folder
+  // Get the base path (e.g., "/rayWebsite/")
+  const basePath = import.meta.env.BASE_URL;
+
+  // Combine base path with your file names
   const media = {
-    robotImage: "./images/smaller_vehicle_image.jpg",   // Main Hero Image
-    mainDemoVideo: "./images/main_video.mp4",           // Main Video at bottom
-    techImage1: "./images/chassis_image.png",            // Technical Image #1 (Left)
-    techImage2: "./images/pcb_image.png"             // Technical Image #2 (Right)
+    robotImage: `${basePath}images/smaller_vehicle_image.jpg`, 
+    mainDemoVideo: `${basePath}images/main_video.mp4`,
+    techImage1: `${basePath}images/chassis_image.png`,
+    techImage2: `${basePath}images/pcb_image.png`
   };
 
   const results = [

@@ -2,8 +2,9 @@ import React from 'react';
 import { Download, FileText } from 'lucide-react';
 
 const ResumePage = () => {
+  const basePath = import.meta.env.BASE_URL;
   // This points to the file in your 'public' folder
-  const resumeUrl = "./Raymond_General_Resume.pdf"; 
+  const resumeUrl = `${basePath}images/Raymond_General_Resume.pdf`; 
 
   return (
     <div className="space-y-8">

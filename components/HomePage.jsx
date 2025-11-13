@@ -2,6 +2,7 @@ import React from 'react';
 import { User, ChevronDown, ArrowRight } from 'lucide-react';
 
 const HomePage = ({ scrollToSection }) => {
+  const basePath = import.meta.env.BASE_URL;
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12 px-4">
       
@@ -33,7 +34,7 @@ const HomePage = ({ scrollToSection }) => {
             {/* Added 'overflow-hidden' so the image stays a circle */}
             <div className="w-32 h-32 bg-gray-50 rounded-full border-4 border-white shadow-md mb-6 relative group-hover:scale-105 transition-transform duration-300 overflow-hidden">
               <img 
-                src="./images/pfpimage.jpg"  /* <--- CHANGE THIS to your actual file path */
+                src={`${basePath}images/pfpimage.jpg`}  /* <--- CHANGE THIS to your actual file path */
                 alt="Raymond Wang" 
                 className="w-full h-full object-cover" /* object-cover ensures it fills the circle without stretching */
               />
