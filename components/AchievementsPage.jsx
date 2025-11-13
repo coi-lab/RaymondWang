@@ -4,7 +4,7 @@ import { Award } from 'lucide-react';
 const AchievementsPage = () => {
   const awards = [
     {
-      title: 'Nationals 4rth Place medal in Flight',
+      title: 'Nationals 4th Place medal in Flight',
       org: 'Science Olympiad',
       year: '2024',
       description: 'Achieved a long flight time, with planes made from extremely light a fragile materials and very intricate tuning of plane and its rubber.'
@@ -16,7 +16,7 @@ const AchievementsPage = () => {
       description: 'Achieved a long flight time, with planes made from extremely light a fragile materials and very intricate tuning of plane and its rubber.'
     },
     {
-      title: 'Nationals 4rth Place medal in Air Trajectory',
+      title: 'Nationals 4th Place medal in Air Trajectory',
       org: 'Science Olympiad',
       year: '2024',
       description: 'Achieved high accuracy with a air projected projectile at various targets.'
