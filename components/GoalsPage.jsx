@@ -1,78 +1,71 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
 
 const GoalsPage = () => {
   const roadmapPhases = [
     {
-      timeline: 'Short-term (0-2 years)',
-      color: 'purple',
+      timeline: 'Short Term',
+      range: '0-2 years',
       goals: [
-        'Complete my undergraduate degree with focus on Computer Engineering',
-        'Gain hands-on experience through internships at leading tech companies',
-        'Develop proficiency in advanced technical skills including Data Analytics, Robotics Experience through RoboWrestling',
-        'Build a portfolio of meaningful projects that demonstrate real-world application'
-      ]
+        'Complete my undergraduate degree with a focus on Computer Engineering.',
+        'Gain internship experience at technical companies.',
+        'Build deeper experience in robotics, embedded systems, and data analysis.',
+        'Keep developing a project portfolio with real hardware and software outcomes.',
+      ],
     },
     {
-      timeline: 'Mid-term (2-5 years)',
-      color: 'indigo',
+      timeline: 'Mid Term',
+      range: '2-5 years',
       goals: [
-        'Gain industy experience in SemiConductors or Robotics',
-        'Contribute to research or development projects with tangible impact',
-        'Build professional network and establish reputation in the engineering community',
-        'Take on leadership roles in technical projects or teams'
-      ]
+        'Gain industry experience in semiconductors, robotics, or related systems work.',
+        'Contribute to projects with visible technical impact.',
+        'Build a strong engineering network and reputation.',
+        'Take on leadership roles in technical projects or teams.',
+      ],
     },
     {
-      timeline: 'Long-term (5+ years)',
-      color: 'violet',
+      timeline: 'Long Term',
+      range: '5+ years',
       goals: [
-        'Achieve senior technical or leadership position in my field',
-        'Make significant contributions to advancing technology in Semiconductors or Robotics',
-        'Mentor the next generation of engineers (maybe Science Olympiad)',
-        'Continue professional development and stay at the forefront of innovation'
-      ]
-    }
+        'Grow into a senior technical or engineering leadership role.',
+        'Contribute to meaningful advances in robotics, ML, or semiconductor systems.',
+        'Mentor younger engineers and Science Olympiad students.',
+        'Continue learning as the field changes.',
+      ],
+    },
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-3 text-gray-800">Career Goals</h1>
-        <p className="text-lg text-gray-600">My roadmap to success and future vision</p>
-      </div>
-
-      <div className="p-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">Long-Term Vision</h2>
-        <p className="text-gray-700 leading-relaxed text-lg">
-          My ultimate career goal is to work in the Robotics or ML field maybe even both at the same time.
-           I envision myself making meaningful contributions to the field 
-          while continuously growing as a technical leader and problem solver.
+    <div className="mx-auto max-w-5xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
+      <section className="p-6 md:p-8">
+      <header className="pb-7">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">Goals</p>
+        <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Career Goals</h1>
+        <p className="mt-5 max-w-3xl text-lg leading-8 text-white/85">
+          My long-term aim is to work in robotics, machine learning, or the overlap between both,
+          while growing into someone who can lead technical projects from idea to working system.
         </p>
-      </div>
+      </header>
 
-      <div className="space-y-5">
-        <h2 className="text-3xl font-bold text-gray-800">Roadmap to Success</h2>
-        
-        {roadmapPhases.map((phase, idx) => (
-          <div key={idx} className="relative p-6 hover:bg-white/50 hover:border-l-4 hover:border-lavender-500 transition-all">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">{phase.timeline}</h3>
-            <ul className="space-y-3">
-              {phase.goals.map((goal, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <div className="mt-1.5 w-6 h-6 rounded-full bg-lavender-300 flex items-center justify-center flex-shrink-0">
-                    <ChevronRight size={16} className="text-gray-700" />
-                  </div>
-                  <span className="text-gray-700 leading-relaxed">{goal}</span>
+      <div>
+        {roadmapPhases.map((phase) => (
+          <section key={phase.timeline} className="grid gap-5 py-8 md:grid-cols-[190px_1fr]">
+            <div>
+              <h2 className="font-display text-2xl font-bold text-white">{phase.timeline}</h2>
+              <p className="mt-1 text-sm font-semibold text-white/70">{phase.range}</p>
+            </div>
+            <ul className="space-y-3 text-white/85">
+              {phase.goals.map((goal) => (
+                <li key={goal} className="px-4 py-3 leading-7">
+                  {goal}
                 </li>
               ))}
             </ul>
-          </div>
+          </section>
         ))}
       </div>
+      </section>
     </div>
   );
 };
 
 export default GoalsPage;
-

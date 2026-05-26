@@ -1,57 +1,54 @@
 import React from 'react';
-import { Award } from 'lucide-react';
 
 const AchievementsPage = () => {
   const awards = [
     {
-      title: 'Nationals 4th Place medal in Flight',
+      title: 'Nationals 4th Place Medal in Flight',
       org: 'Science Olympiad',
       year: '2024',
-      description: 'Achieved a long flight time, with planes made from extremely light a fragile materials and very intricate tuning of plane and its rubber.'
+      description:
+        'Built and tuned lightweight aircraft with careful control of structure, trim, and rubber power.',
     },
     {
-      title: 'Nationals 3rd Place medal in Flight',
+      title: 'Nationals 3rd Place Medal in Flight',
       org: 'Science Olympiad',
       year: '2023',
-      description: 'Achieved a long flight time, with planes made from extremely light a fragile materials and very intricate tuning of plane and its rubber.'
+      description:
+        'Competed nationally with custom-built planes made from extremely light and fragile materials.',
     },
     {
-      title: 'Nationals 4th Place medal in Air Trajectory',
+      title: 'Nationals 4th Place Medal in Air Trajectory',
       org: 'Science Olympiad',
       year: '2024',
-      description: 'Achieved high accuracy with a air projected projectile at various targets.'
-    }
+      description: 'Designed and tuned a projectile system for high accuracy across target distances.',
+    },
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-3 text-gray-800">Achievements</h1>
-        <p className="text-lg text-gray-600">Recognition and accomplishments</p>
-      </div>
-      
+    <div className="mx-auto max-w-5xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
+      <section className="p-6 md:p-8">
+      <header className="pb-7">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">Achievements</p>
+        <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Awards</h1>
+      </header>
+
       <div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Awards & Honors</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {awards.map((award, idx) => (
-            <div key={idx} className="p-6 hover:bg-white/50 hover:border-l-4 hover:border-lavender-500 hover:shadow-md transition-all">
-              <div className="flex items-start gap-4 mb-3">
-                <div className="w-12 h-12 rounded-full bg-lavender-100 flex items-center justify-center flex-shrink-0 border-2 border-lavender-200">
-                  <Award className="text-gray-600" size={24} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-800">{award.title}</h3>
-                  <p className="text-sm font-semibold text-gray-600">{award.org} • {award.year}</p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 pl-16">{award.description}</p>
+        {awards.map((award) => (
+          <article key={`${award.title}-${award.year}`} className="grid gap-5 py-8 md:grid-cols-[190px_1fr]">
+            <aside className="text-sm font-semibold text-white/70">
+              <p>{award.year}</p>
+              <p className="mt-2 text-white/85">{award.org}</p>
+            </aside>
+            <div>
+              <h2 className="font-display text-2xl font-bold text-white">{award.title}</h2>
+              <p className="mt-3 leading-7 text-white/85">{award.description}</p>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
+      </section>
     </div>
   );
 };
 
 export default AchievementsPage;
-

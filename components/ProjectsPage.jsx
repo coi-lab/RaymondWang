@@ -1,167 +1,220 @@
-import React from 'react';
-import { Lightbulb, Play, Image as ImageIcon, ZoomIn } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 const ProjectsPage = () => {
-  // Get the base path (e.g., "/rayWebsite/")
   const basePath = import.meta.env.BASE_URL;
-
-  // Combine base path with your file names
-  const media = {
-    robotImage: `${basePath}images/smaller_vehicle_image.jpg`, 
-    mainDemoVideo: `${basePath}images/main_video.mp4`,
-    techImage1: `${basePath}images/chassis_image.png`,
-    techImage2: `${basePath}images/pcb_image.png`
-  };
-
-  const results = [
-    'Robot can keep itself inside the dojo',
-    'Using the IR sensors to detect the other robot',
-    'Processed sensor data in real-time (<50ms latency)',
-    'Top 16 in the Florida MakerFaire tournament'
-  ];
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const technologies = ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'];
+  const results = [
+    'Kept the robot inside the dojo using line sensor feedback.',
+    'Used IR sensors to locate and react to the opposing robot.',
+    'Processed sensor data in real time with sub-50ms response targets.',
+    'Reached Top 16 at the Florida MakerFaire tournament.',
+  ];
 
-  return (
-    <div className="space-y-12">
-      <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-3 text-gray-800">Discovery Project</h1>
-        <p className="text-lg text-gray-600">Featured technical project showcase</p>
-      </div>
-      
-      <article className="space-y-12 max-w-5xl mx-auto">
-        
-        {/* Header Section */}
-        <div className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">Autonomous Robot Platform</h2>
-              <p className="text-purple-600 font-medium">Fall 2024</p>
+  const projectTemplates = [
+    {
+      id: 'robot',
+      title: 'Autonomous Robot Platform',
+      subtitle: 'RoboWrestling competition robot',
+      summary:
+        'A compact RoboWrestling platform built around sensor fusion, custom electronics, and mechanical design for autonomous sumo-style competition.',
+      image: `${basePath}images/smaller_vehicle_image.jpg`,
+      available: true,
+    },
+    {
+      id: 'template-1',
+      title: 'Project Title',
+      subtitle: 'Short project description',
+      summary: 'Add a short project summary here.',
+      image: null,
+      available: false,
+    },
+    {
+      id: 'template-2',
+      title: 'Project Title',
+      subtitle: 'Short project description',
+      summary: 'Add a short project summary here.',
+      image: null,
+      available: false,
+    },
+  ];
+
+  if (selectedProject === 'robot') {
+    return (
+    <div className="mx-auto max-w-6xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
+        <button
+          type="button"
+          onClick={() => setSelectedProject(null)}
+          className="mb-6 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-opacity hover:opacity-75"
+        >
+          <ArrowLeft size={16} />
+          Back to projects
+        </button>
+
+        <header className="mb-6 p-6 md:p-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+                Project Details
+              </p>
+              <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">
+                Autonomous Robot Platform
+              </h1>
+              <p className="mt-3 text-sm font-semibold text-white/70">Fall 2024</p>
             </div>
-            <div className="md:min-w-[300px]">
-              <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Technologies</h3>
+
+            <div className="md:min-w-[280px]">
+              <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Tools</h2>
               <div className="flex flex-wrap gap-2">
                 {technologies.map((tech) => (
-                  <span key={tech} className="bg-gray-50 px-3 py-1 rounded-lg text-sm font-medium text-gray-700 border border-gray-200 hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700 transition-all">
+                  <span
+                    key={tech}
+                    className="px-3 py-1 text-sm font-semibold text-white"
+                  >
                     {tech}
                   </span>
                 ))}
               </div>
             </div>
           </div>
-        </div>
+        </header>
 
-        {/* 1. HERO IMAGE (The Robot) */}
-        <div className="relative w-full h-[500px] bg-gray-100 rounded-2xl overflow-hidden shadow-xl border border-gray-200 group">
-          <img 
-            src={media.robotImage} 
-            alt="Robot Main View" 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          {/* Fallback overlay if image is missing */}
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 -z-10">
-             <div className="text-center text-gray-400">
-                <ImageIcon size={48} className="mx-auto mb-2" />
-                <p>Image not found at {media.robotImage}</p>
-             </div>
-          </div>
-        </div>
-
-        {/* Overview Text */}
-        <div className="prose max-w-none pl-4 border-l-4 border-purple-300">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Project Overview</h3>
-          <p className="text-gray-700 leading-relaxed text-lg">
-            This discovery project was part of the build for the RoboJackets Robowrestling team.  
-            The goal was to create a robot capable of keeping itself inside the dojo while fighting against another robot. 
-            We used IR sensors to detect the other robot and push them off the dojo and line sensors to keep the robot in.
-            The brain of the robot was an Arduino Uno connected to motor drivers, line sensors, and IR sensors.
-          </p>
-        </div>
-
-        {/* Technical Section */}
-        <div className="space-y-6">
-          <div className="pl-4 border-l-4 border-gray-300">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Technical Approach</h3>
-            <p className="text-gray-600">
-              Breakdown of the mechanical design and PCB design. 
-            </p>
-          </div>
-
-          {/* 2. TECHNICAL IMAGES GRID (Replacing Videos) */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Tech Image 1 */}
-            <div className="bg-gray-100 rounded-xl overflow-hidden shadow-lg border border-gray-200 group relative h-72">
-              <img 
-                src={media.techImage1} 
-                alt="Technical Detail 1"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        <article className="p-6 md:p-8">
+          <section className="pb-8">
+            <div className="grid gap-8 md:grid-cols-[1.05fr_0.95fr] md:items-start">
+              <img
+                src={`${basePath}images/smaller_vehicle_image.jpg`}
+                alt="Autonomous robot platform"
+                className="aspect-[4/3] w-full rounded-sm object-cover"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-3 border-t border-gray-200">
-                <p className="font-semibold text-gray-800 flex items-center gap-2">
-                  <ZoomIn size={16} className="text-purple-600" /> PCB / Circuit Design
-                </p>
-              </div>
-            </div>
 
-            {/* Tech Image 2 */}
-            <div className="bg-gray-100 rounded-xl overflow-hidden shadow-lg border border-gray-200 group relative h-72">
-               <img 
-                src={media.techImage2} 
-                alt="Technical Detail 2"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-3 border-t border-gray-200">
-                <p className="font-semibold text-gray-800 flex items-center gap-2">
-                  <ZoomIn size={16} className="text-purple-600" /> Mechanical CAD View
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="prose max-w-none">
-           <p className="text-gray-700 leading-relaxed pl-5">
-            The system architecture consists of an Arduino Uno connected to motor drivers, line sensors, and IR sensors.
-            The motor drivers were controlled by the Arduino Uno using the L298N motor driver IC.
-            The line sensors were controlled by the Arduino Uno using the lunar robotics line sensor IC.
-            The IR sensors were controlled by the Arduino Uno using the JSUMO IR sensors.
-            The brain of the robot was an Arduino Uno connected to motor drivers, line sensors, and IR sensors.
-            This was then all powered by a 12V battery and a 5V regulator all connected on a custom PCB designed by me and a team member. 
-          </p>
-        </div>
-
-        {/* Results & Impact */}
-        <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-800 mb-6">Results & Impact</h3>
-          <ul className="space-y-3 mb-8">
-            {results.map((result, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <div className="mt-1.5 w-5 h-5 rounded-full bg-purple-200 flex items-center justify-center flex-shrink-0">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+              <div className="space-y-7">
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-white">Overview</h2>
+                  <p className="mt-3 leading-7 text-white/85">
+                    This discovery project was part of the build for the RoboJackets RoboWrestling
+                    team. The goal was to create a robot that could stay inside the dojo while finding
+                    and pushing an opposing robot out of bounds.
+                  </p>
                 </div>
-                <span className="text-gray-700 font-medium">{result}</span>
-              </li>
-            ))}
-          </ul>
-          
-          {/* 3. MAIN DEMO VIDEO */}
-          <div className="space-y-4">
-            <h4 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <Play size={24} className="fill-purple-600 text-purple-600" />
-              Final Project Demo
-            </h4>
-            <div className="relative w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-300">
-              <video 
-                controls 
-                className="w-full aspect-video"
-                src={media.mainDemoVideo}
+
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-white">System</h2>
+                  <p className="mt-3 leading-7 text-white/85">
+                    An Arduino Uno controlled motor drivers, line sensors, IR sensors, and a custom
+                    PCB powered from a 12V battery with 5V regulation. I worked on the electronics and
+                    mechanical integration with the team.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="grid gap-8 py-8 md:grid-cols-[190px_1fr]">
+            <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-white">
+              Technical Work
+            </h2>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <figure>
+                <img
+                  src={`${basePath}images/chassis_image.png`}
+                  alt="Robot chassis CAD view"
+                  className="aspect-[4/3] w-full rounded-sm object-cover"
+                />
+                <figcaption className="mt-3 text-sm font-semibold text-white/75">Mechanical CAD and chassis layout.</figcaption>
+              </figure>
+
+              <figure>
+                <img
+                  src={`${basePath}images/pcb_image.png`}
+                  alt="Robot PCB design"
+                  className="aspect-[4/3] w-full rounded-sm object-cover"
+                />
+                <figcaption className="mt-3 text-sm font-semibold text-white/75">Custom PCB and circuit routing.</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section className="grid gap-8 py-8 md:grid-cols-[190px_1fr]">
+            <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-white">Results</h2>
+
+            <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
+              <ul className="space-y-3 text-white/85">
+                {results.map((result) => (
+                  <li key={result} className="px-4 py-3 leading-7">
+                    {result}
+                  </li>
+                ))}
+              </ul>
+
+              <video
+                controls
+                className="aspect-video w-full rounded-sm bg-black"
+                src={`${basePath}images/main_video.mp4`}
               >
                 Your browser does not support the video tag.
               </video>
             </div>
-          </div>
-        </div>
-      </article>
+          </section>
+        </article>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
+      <p className="mb-4 px-4 py-2 text-sm font-semibold text-white/80 md:inline-block">
+        Click a project image to view more details.
+      </p>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {projectTemplates.map((project) => (
+          <button
+            key={project.id}
+            type="button"
+            onClick={() => project.available && setSelectedProject(project.id)}
+            disabled={!project.available}
+            className={`group text-left ${project.available ? 'cursor-pointer' : 'cursor-default'}`}
+          >
+            <div className="relative aspect-[4/3] overflow-hidden rounded-sm transition-transform duration-300 group-hover:-translate-y-0.5">
+              {project.image ? (
+                <>
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
+                  />
+                  <div className="absolute inset-0 flex items-end bg-[#35224f]/0 p-6 opacity-0 transition-all duration-300 group-hover:bg-[#35224f]/85 group-hover:opacity-100">
+                    <div className="max-w-[90%]">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+                        {project.title}
+                      </p>
+                      <p className="text-base font-medium leading-7 text-white">{project.summary}</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex h-full w-full items-center justify-center text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
+                    Add Image
+                  </div>
+                  <div className="absolute inset-0 flex items-end bg-[#35224f]/0 p-6 opacity-0 transition-all duration-300 group-hover:bg-[#35224f]/85 group-hover:opacity-100">
+                    <div className="max-w-[90%]">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+                        {project.title}
+                      </p>
+                      <p className="text-base font-medium leading-7 text-white">{project.summary}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
