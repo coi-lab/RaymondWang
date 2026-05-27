@@ -51,7 +51,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#35224f] text-white flex flex-col">
+    <div className="min-h-screen bg-white text-gray-900 flex flex-col">
       <Navigation
         pages={pages}
         activePage={activePage}

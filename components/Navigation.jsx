@@ -9,9 +9,9 @@ const socialLinks = [
 
 const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMenuOpen }) => {
   return (
-    <header className="font-nav sticky top-0 z-50 px-4 pt-2">
-      <div className="mx-auto max-w-6xl px-1">
-        <div className="flex h-10 items-center justify-between gap-6">
+    <header className="font-nav sticky top-0 z-50 border-b border-gray-200 bg-white/95 px-4 backdrop-blur">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex h-14 items-center justify-between gap-6">
           <nav className="hidden items-center gap-2 md:flex" aria-label="Primary navigation">
             {pages.map((page) => (
               <button
@@ -20,8 +20,8 @@ const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMe
                 onClick={() => changePage(page.id)}
                 className={`px-3 py-1 text-sm font-semibold transition-colors ${
                   activePage === page.id
-                    ? 'text-white underline decoration-white underline-offset-4'
-                    : 'text-white/70 hover:text-white'
+                    ? 'text-[#35224f]'
+                    : 'text-gray-500 hover:text-[#35224f]'
                 }`}
               >
                 {page.label}
@@ -36,7 +36,7 @@ const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMe
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/80 transition-colors hover:text-white"
+                className="text-gray-500 transition-colors hover:text-[#35224f]"
                 aria-label={label}
               >
                 <Icon size={18} />
@@ -46,7 +46,7 @@ const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMe
 
           <button
             type="button"
-            className="p-2 text-white md:hidden"
+            className="p-2 text-gray-900 md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -56,7 +56,7 @@ const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMe
       </div>
 
       {mobileMenuOpen && (
-        <nav className="mx-auto mt-2 max-w-6xl px-1 py-3 md:hidden" aria-label="Mobile navigation">
+        <nav className="mx-auto max-w-6xl border-t border-gray-200 py-3 md:hidden" aria-label="Mobile navigation">
           <div className="mx-auto flex max-w-6xl flex-col">
             {pages.map((page) => (
               <button
@@ -64,7 +64,7 @@ const Navigation = ({ pages, activePage, changePage, mobileMenuOpen, setMobileMe
                 type="button"
                 onClick={() => changePage(page.id)}
                 className={`px-3 py-2 text-left text-sm font-semibold ${
-                  activePage === page.id ? 'text-white underline decoration-white underline-offset-4' : 'text-white/70'
+                  activePage === page.id ? 'text-[#35224f]' : 'text-gray-500'
                 }`}
               >
                 {page.label}

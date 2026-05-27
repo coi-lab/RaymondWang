@@ -1,0 +1,65 @@
+# Design Specification: Publish Page Redesign
+
+## 1. Objective
+Redesign the "Publish" (or Updates/Projects) page to emulate the interactive "Latest Updates" section found on the Anthropic Economic Futures page. The core interaction features a scrollable list of rows on the left (containing dates, titles, and categories) and a sticky preview pane on the right that updates its image and description based on the currently hovered row.
+
+## 2. Global Layout & Structure
+* **Grid System:** Utilize a two-column CSS Grid layout (e.g., `grid-cols-12` in Tailwind).
+    * **Left Column (e.g., `col-span-7`):** The list container. This area should scroll naturally with the page.
+    * **Right Column (e.g., `col-span-5`):** The preview container. This should use `sticky top-24` (or similar) so it remains in the viewport as the user scrolls through the list on the left.
+* **Mobile Behavior:** On screens smaller than `md` or `lg`, the two-column layout should collapse. The sticky preview should be hidden, and the image/description should either appear inline beneath the row upon clicking, or default to a standard vertical card layout.
+
+## 3. Left Column: Row List Design
+* **Row Structure:** Each item is a horizontal flex container or grid row.
+    * **Elements:** 1. Date (e.g., "APR 12, 2026") - Small, muted text.
+        2. Title - Prominent, medium/bold weight.
+        3. Category/Tag (e.g., "HARDWARE", "RESEARCH") - Small, uppercase, perhaps monospaced.
+    * **Styling:** Rows should be separated by thin `1px` top/bottom borders (`border-gray-200`). Padding should be generous (e.g., `py-6`).
+* **Interaction:** * Use `onMouseEnter` to trigger a state update setting the `activeItemId`.
+    * When a row is active, apply a subtle background highlight or change the title text color to the established dark purple accent.
+
+## 4. Right Column: Sticky Preview Pane
+* **Container:** A fixed-height container that updates dynamically without causing page layout shifts.
+* **Image Box:** * A clean bounding box (optional thin border).
+    * The image should use `object-cover` and fill the container cleanly.
+    * Include a smooth opacity transition (`transition-opacity duration-300`) when the image swaps out.
+* **Description Area:** * Positioned directly below the image.
+    * Contains a short, 2-3 sentence abstract summarizing the hovered row.
+    * Typography should be clean, readable body text.
+
+## 5. State Management & Data Structure
+* Maintain a state variable (e.g., `const [hoveredItem, setHoveredItem] = useState(data[0])`) that defaults to the first item in the list.
+* **Required Data Schema:**
+    ```javascript
+    const publishData = [
+      {
+        id: "1",
+        date: "Apr 2026",
+        category: "Robotics",
+        title: "Mini-Sumo Bot 'Krabbi' Sensor Integration",
+        description: "Implementation of IR and LiDAR sensor arrays for autonomous ring navigation and opponent tracking in 500g constraints.",
+        imageUrl: "/images/krabbi-sensors.jpg"
+      },
+      {
+        id: "2",
+        date: "Feb 2026",
+        category: "PCB Design",
+        title: "Custom Embedded System Power Delivery",
+        description: "KiCad schematic and routing optimizations for efficient power distribution in high-torque embedded motor controllers.",
+        imageUrl: "/images/pcb-routing.jpg"
+      },
+      {
+        id: "3",
+        date: "Dec 2025",
+        category: "Systems",
+        title: "Kernel Configuration for Low-Latency Execution",
+        description: "Custom kernel adjustments and scheduler tuning to improve real-time response rates for autonomous edge computing.",
+        imageUrl: "/images/kernel-config.jpg"
+      }
+    ];
+    ```
+
+## 6. Visual Aesthetic Requirements
+* Maintain the crisp, white background with dark text.
+* Keep fonts consistent (e.g., JetBrains Mono for tags/dates, standard legible font for titles and descriptions).
+* Avoid box-shadows or rounded corners for a more brutalist, print-inspired layout.

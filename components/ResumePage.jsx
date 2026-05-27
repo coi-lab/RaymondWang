@@ -6,11 +6,11 @@ const ResumePage = () => {
   const resumeUrl = `${basePath}images/Raymond_General_Resume.pdf`;
 
   return (
-    <div className="mx-auto max-w-5xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
-      <header className="mb-6 flex flex-col gap-5 p-6 md:flex-row md:items-end md:justify-between md:p-8">
+    <div className="mx-auto max-w-5xl px-5 py-12 md:py-16">
+      <header className="mb-8 flex flex-col gap-5 border-b border-gray-200 pb-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">Resume</p>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Resume</h1>
+          <p className="font-nav mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">Resume</p>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">Resume</h1>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -18,7 +18,7 @@ const ResumePage = () => {
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-opacity hover:opacity-75"
+            className="inline-flex items-center gap-2 px-0 py-2 text-sm font-semibold text-gray-700 underline underline-offset-4 transition-colors hover:text-[#35224f]"
           >
             <ExternalLink size={16} />
             Open PDF
@@ -26,7 +26,7 @@ const ResumePage = () => {
           <a
             href={resumeUrl}
             download="Raymond_Wang_Resume.pdf"
-            className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-opacity hover:opacity-75"
+            className="inline-flex items-center gap-2 px-0 py-2 text-sm font-semibold text-[#35224f] underline underline-offset-4 transition-opacity hover:opacity-70"
           >
             <Download size={16} />
             Download PDF
@@ -34,7 +34,7 @@ const ResumePage = () => {
         </div>
       </header>
 
-      <div className="overflow-hidden rounded-sm bg-white">
+      <div className="overflow-hidden border border-gray-200 bg-white">
         <iframe
           src={`${resumeUrl}#toolbar=0&navpanes=0&view=FitH`}
           className="h-[820px] w-full"

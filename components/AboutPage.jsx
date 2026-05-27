@@ -2,14 +2,14 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <div className="mx-auto max-w-4xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
-      <section className="p-6 md:p-8">
-        <header className="pb-6">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">About</p>
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">About Me</h1>
+    <div className="mx-auto max-w-4xl px-5 py-12 md:py-16">
+      <section>
+        <header className="border-b border-gray-200 pb-8">
+          <p className="font-nav mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">About</p>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">About Me</h1>
         </header>
 
-        <div className="space-y-7 pt-7 text-lg leading-8 text-white/85">
+        <div className="space-y-7 py-8 text-lg leading-8 text-gray-700">
           <p>
             I'm a Computer Engineering student at Georgia Tech, driven by curiosity and a desire to
             solve practical problems through technology. My interest in engineering started with

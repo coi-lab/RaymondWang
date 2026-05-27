@@ -3,217 +3,196 @@ import { ArrowLeft } from 'lucide-react';
 
 const ProjectsPage = () => {
   const basePath = import.meta.env.BASE_URL;
-  const [selectedProject, setSelectedProject] = useState(null);
 
-  const technologies = ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'];
-  const results = [
-    'Kept the robot inside the dojo using line sensor feedback.',
-    'Used IR sensors to locate and react to the opposing robot.',
-    'Processed sensor data in real time with sub-50ms response targets.',
-    'Reached Top 16 at the Florida MakerFaire tournament.',
+  const publishData = [
+    {
+      id: 'krabbi',
+      date: 'Fall 2024',
+      category: 'Robotics',
+      title: "Mini-Sumo Bot 'Krabbi' Sensor Integration",
+      description:
+        'Autonomous RoboWrestling platform using line sensors for ring detection and IR sensors for opponent tracking. The robot combines embedded control, custom PCB work, and mechanical design inside a compact competition platform.',
+      imageUrl: `${basePath}images/smaller_vehicle_image.jpg`,
+      tags: ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'],
+      details: {
+        overview:
+          'This discovery project was part of the build for the RoboJackets RoboWrestling team. The goal was to create a robot that could stay inside the dojo while finding and pushing an opposing robot out of bounds.',
+        system:
+          'An Arduino Uno controlled motor drivers, line sensors, IR sensors, and a custom PCB powered from a 12V battery with 5V regulation.',
+        results: [
+          'Kept the robot inside the dojo using line sensor feedback.',
+          'Used IR sensors to locate and react to the opposing robot.',
+          'Processed sensor data in real time with sub-50ms response targets.',
+          'Reached Top 16 at the Florida MakerFaire tournament.',
+        ],
+      },
+    },
+    {
+      id: 'pcb-template',
+      date: 'Add Date',
+      category: 'PCB Design',
+      title: 'Custom Embedded System Power Delivery',
+      description:
+        'Template entry for a future KiCad or embedded hardware project. Add notes about the schematic, routing strategy, constraints, and what the board enabled.',
+      imageUrl: null,
+      tags: ['KiCad', 'PCB', 'Power'],
+    },
+    {
+      id: 'ml-template',
+      date: 'Add Date',
+      category: 'Research',
+      title: 'Machine Learning Project',
+      description:
+        'Template entry for a future research or machine learning project. Add the problem, method, data source, and the measurable result of the work.',
+      imageUrl: null,
+      tags: ['Python', 'Modeling', 'Data'],
+    },
   ];
 
-  const projectTemplates = [
-    {
-      id: 'robot',
-      title: 'Autonomous Robot Platform',
-      subtitle: 'RoboWrestling competition robot',
-      summary:
-        'A compact RoboWrestling platform built around sensor fusion, custom electronics, and mechanical design for autonomous sumo-style competition.',
-      image: `${basePath}images/smaller_vehicle_image.jpg`,
-      available: true,
-    },
-    {
-      id: 'template-1',
-      title: 'Project Title',
-      subtitle: 'Short project description',
-      summary: 'Add a short project summary here.',
-      image: null,
-      available: false,
-    },
-    {
-      id: 'template-2',
-      title: 'Project Title',
-      subtitle: 'Short project description',
-      summary: 'Add a short project summary here.',
-      image: null,
-      available: false,
-    },
-  ];
+  const [hoveredItem, setHoveredItem] = useState(publishData[0]);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const selectedItem = publishData.find((item) => item.id === selectedItemId);
 
-  if (selectedProject === 'robot') {
+  if (selectedItem?.details) {
     return (
-    <div className="mx-auto max-w-6xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
+      <div className="mx-auto max-w-6xl px-5 py-10 md:py-14">
         <button
           type="button"
-          onClick={() => setSelectedProject(null)}
-          className="mb-6 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white underline decoration-white/50 underline-offset-4 transition-opacity hover:opacity-75"
+          onClick={() => setSelectedItemId(null)}
+          className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
         >
           <ArrowLeft size={16} />
           Back to projects
         </button>
 
-        <header className="mb-6 p-6 md:p-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div className="max-w-2xl">
-              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
-                Project Details
-              </p>
-              <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">
-                Autonomous Robot Platform
-              </h1>
-              <p className="mt-3 text-sm font-semibold text-white/70">Fall 2024</p>
-            </div>
-
-            <div className="md:min-w-[280px]">
-              <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-white/70">Tools</h2>
-              <div className="flex flex-wrap gap-2">
-                {technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 text-sm font-semibold text-white"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+        <header className="border-b border-gray-200 pb-8">
+          <p className="font-nav mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">
+            {selectedItem.category} / {selectedItem.date}
+          </p>
+          <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-gray-950 md:text-6xl">
+            {selectedItem.title}
+          </h1>
+          <p className="mt-6 max-w-3xl leading-7 text-gray-700">{selectedItem.description}</p>
         </header>
 
-        <article className="p-6 md:p-8">
-          <section className="pb-8">
-            <div className="grid gap-8 md:grid-cols-[1.05fr_0.95fr] md:items-start">
-              <img
-                src={`${basePath}images/smaller_vehicle_image.jpg`}
-                alt="Autonomous robot platform"
-                className="aspect-[4/3] w-full rounded-sm object-cover"
-              />
-
-              <div className="space-y-7">
-                <div>
-                  <h2 className="font-display text-2xl font-bold text-white">Overview</h2>
-                  <p className="mt-3 leading-7 text-white/85">
-                    This discovery project was part of the build for the RoboJackets RoboWrestling
-                    team. The goal was to create a robot that could stay inside the dojo while finding
-                    and pushing an opposing robot out of bounds.
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="font-display text-2xl font-bold text-white">System</h2>
-                  <p className="mt-3 leading-7 text-white/85">
-                    An Arduino Uno controlled motor drivers, line sensors, IR sensors, and a custom
-                    PCB powered from a 12V battery with 5V regulation. I worked on the electronics and
-                    mechanical integration with the team.
-                  </p>
-                </div>
-              </div>
+        <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[1.05fr_0.95fr]">
+          <img src={selectedItem.imageUrl} alt={selectedItem.title} className="aspect-[4/3] w-full object-cover" />
+          <div className="space-y-8">
+            <div>
+              <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Overview</h2>
+              <p className="mt-4 leading-7 text-gray-700">{selectedItem.details.overview}</p>
             </div>
-          </section>
-
-          <section className="grid gap-8 py-8 md:grid-cols-[190px_1fr]">
-            <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-white">
-              Technical Work
-            </h2>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <figure>
-                <img
-                  src={`${basePath}images/chassis_image.png`}
-                  alt="Robot chassis CAD view"
-                  className="aspect-[4/3] w-full rounded-sm object-cover"
-                />
-                <figcaption className="mt-3 text-sm font-semibold text-white/75">Mechanical CAD and chassis layout.</figcaption>
-              </figure>
-
-              <figure>
-                <img
-                  src={`${basePath}images/pcb_image.png`}
-                  alt="Robot PCB design"
-                  className="aspect-[4/3] w-full rounded-sm object-cover"
-                />
-                <figcaption className="mt-3 text-sm font-semibold text-white/75">Custom PCB and circuit routing.</figcaption>
-              </figure>
+            <div>
+              <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">System</h2>
+              <p className="mt-4 leading-7 text-gray-700">{selectedItem.details.system}</p>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="grid gap-8 py-8 md:grid-cols-[190px_1fr]">
-            <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-white">Results</h2>
+        <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+          <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Technical Work</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            <figure>
+              <img src={`${basePath}images/chassis_image.png`} alt="Robot chassis CAD view" className="aspect-[4/3] w-full object-cover" />
+              <figcaption className="mt-3 text-sm text-gray-500">Mechanical CAD and chassis layout.</figcaption>
+            </figure>
+            <figure>
+              <img src={`${basePath}images/pcb_image.png`} alt="Robot PCB design" className="aspect-[4/3] w-full object-cover" />
+              <figcaption className="mt-3 text-sm text-gray-500">Custom PCB and circuit routing.</figcaption>
+            </figure>
+          </div>
+        </section>
 
-            <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
-              <ul className="space-y-3 text-white/85">
-                {results.map((result) => (
-                  <li key={result} className="px-4 py-3 leading-7">
-                    {result}
-                  </li>
-                ))}
-              </ul>
-
-              <video
-                controls
-                className="aspect-video w-full rounded-sm bg-black"
-                src={`${basePath}images/main_video.mp4`}
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </section>
-        </article>
+        <section className="grid gap-10 py-10 md:grid-cols-[180px_1fr]">
+          <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Results</h2>
+          <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
+            <ul className="space-y-4 text-gray-700">
+              {selectedItem.details.results.map((result) => (
+                <li key={result} className="border-l border-gray-200 pl-4 leading-7">
+                  {result}
+                </li>
+              ))}
+            </ul>
+            <video controls className="aspect-video w-full bg-black" src={`${basePath}images/main_video.mp4`}>
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </section>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
-      <p className="mb-4 px-4 py-2 text-sm font-semibold text-white/80 md:inline-block">
-        Click a project image to view more details.
-      </p>
+    <div className="mx-auto max-w-7xl px-5 py-8 md:py-10">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-950 md:text-3xl">Projects</h1>
+      </header>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {projectTemplates.map((project) => (
-          <button
-            key={project.id}
-            type="button"
-            onClick={() => project.available && setSelectedProject(project.id)}
-            disabled={!project.available}
-            className={`group text-left ${project.available ? 'cursor-pointer' : 'cursor-default'}`}
-          >
-            <div className="relative aspect-[4/3] overflow-hidden rounded-sm transition-transform duration-300 group-hover:-translate-y-0.5">
-              {project.image ? (
-                <>
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-                  />
-                  <div className="absolute inset-0 flex items-end bg-[#35224f]/0 p-6 opacity-0 transition-all duration-300 group-hover:bg-[#35224f]/85 group-hover:opacity-100">
-                    <div className="max-w-[90%]">
-                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-                        {project.title}
-                      </p>
-                      <p className="text-base font-medium leading-7 text-white">{project.summary}</p>
-                    </div>
+      <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(200px,24vw)] xl:grid-cols-[minmax(0,1fr)_320px]">
+        <section>
+          <div className="font-nav grid gap-3 pb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)]">
+            <div>Date</div>
+            <div>Category</div>
+            <div>Title</div>
+          </div>
+
+          <div className="border-t border-gray-200">
+            {publishData.map((item) => {
+              const isActive = hoveredItem.id === item.id;
+              const isClickable = Boolean(item.details);
+
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onMouseEnter={() => setHoveredItem(item)}
+                  onFocus={() => setHoveredItem(item)}
+                  onClick={() => isClickable && setSelectedItemId(item.id)}
+                  className={`grid w-full gap-3 border-b border-gray-200 py-4 text-left transition-colors md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)] ${
+                    isActive ? 'text-[#35224f]' : 'text-gray-700'
+                  } ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+                >
+                  <div className="text-sm leading-6 text-gray-600 md:text-[15px]">
+                    {item.date}
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex h-full w-full items-center justify-center text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
-                    Add Image
+
+                  <div className="text-sm leading-6 text-gray-600 md:text-[15px]">
+                    {item.category}
                   </div>
-                  <div className="absolute inset-0 flex items-end bg-[#35224f]/0 p-6 opacity-0 transition-all duration-300 group-hover:bg-[#35224f]/85 group-hover:opacity-100">
-                    <div className="max-w-[90%]">
-                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-                        {project.title}
-                      </p>
-                      <p className="text-base font-medium leading-7 text-white">{project.summary}</p>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </button>
-        ))}
+
+                  <h2 className="text-sm font-medium leading-6 md:text-[15px]">{item.title}</h2>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
+        <aside className="hidden md:block">
+          <div className="sticky top-20">
+            <PreviewImage item={hoveredItem} />
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+};
+
+const PreviewImage = ({ item }) => {
+  if (item.imageUrl) {
+    return (
+      <img
+        key={item.id}
+        src={item.imageUrl}
+        alt={item.title}
+        className="aspect-square w-full max-w-[min(100%,20rem)] object-cover opacity-100 transition-opacity duration-300"
+      />
+    );
+  }
+
+  return (
+    <div className="flex aspect-square w-full max-w-[min(100%,20rem)] items-center justify-center bg-[#35224f]">
+      <div className="font-nav text-center text-xs font-semibold uppercase tracking-[0.24em] text-white">
+        NO VISUAL DATA
       </div>
     </div>
   );

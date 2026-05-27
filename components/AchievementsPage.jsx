@@ -25,28 +25,26 @@ const AchievementsPage = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-5 pb-10 pt-4 md:pb-12 md:pt-6">
-      <section className="p-6 md:p-8">
-      <header className="pb-7">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/70">Achievements</p>
-        <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">Awards</h1>
+    <div className="mx-auto max-w-5xl px-5 py-12 md:py-16">
+      <header className="border-b border-gray-200 pb-8">
+        <p className="font-nav mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">Achievements</p>
+        <h1 className="text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">Awards</h1>
       </header>
 
-      <div>
+      <div className="divide-y divide-gray-200">
         {awards.map((award) => (
           <article key={`${award.title}-${award.year}`} className="grid gap-5 py-8 md:grid-cols-[190px_1fr]">
-            <aside className="text-sm font-semibold text-white/70">
+            <aside className="font-nav text-xs font-semibold uppercase tracking-[0.16em] text-[#35224f]">
               <p>{award.year}</p>
-              <p className="mt-2 text-white/85">{award.org}</p>
+              <p className="mt-2 text-gray-500">{award.org}</p>
             </aside>
             <div>
-              <h2 className="font-display text-2xl font-bold text-white">{award.title}</h2>
-              <p className="mt-3 leading-7 text-white/85">{award.description}</p>
+              <h2 className="text-2xl font-bold text-gray-950">{award.title}</h2>
+              <p className="mt-3 leading-7 text-gray-700">{award.description}</p>
             </div>
           </article>
         ))}
       </div>
-      </section>
     </div>
   );
 };
