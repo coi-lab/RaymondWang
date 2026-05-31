@@ -6,6 +6,31 @@ const ProjectsPage = () => {
 
   const publishData = [
     {
+      id: 'krabbi-2025',
+      date: 'Fall 2025',
+      category: 'Robotics',
+      title: "Mini-Sumo Bot 'Krabbi'",
+      description:
+        'Autonomous mini-sumo robot iteration focused on competition-ready behavior, sensor response, and robust edge-control for 500g RoboWrestling.',
+      imageUrl: `${basePath}images/krabbi.jpg`,
+      videoUrl: `${basePath}images/krabbiBrazil.mp4`,
+      cadImageUrl: `${basePath}images/krabbiCAD.png`,
+      pcbImageUrl: `${basePath}images/krabbiPCB.png`,
+      tags: ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'],
+      details: {
+        overview:
+          'This discovery project was part of the build for the RoboJackets RoboWrestling team. The goal was to create a robot that could stay inside the dojo while finding and pushing an opposing robot out of bounds.',
+        system:
+          'An Arduino Uno controlled motor drivers, line sensors, IR sensors, and a custom PCB powered from a 12V battery with 5V regulation.',
+        results: [
+          'Kept the robot inside the dojo using line sensor feedback.',
+          'Used IR sensors to locate and react to the opposing robot.',
+          'Processed sensor data in real time with sub-50ms response targets.',
+          'Reached Top 16 at the Florida MakerFaire tournament.',
+        ],
+      },
+    },
+    {
       id: 'krabbi',
       date: 'Fall 2024',
       category: 'Robotics',
@@ -13,6 +38,9 @@ const ProjectsPage = () => {
       description:
         'Autonomous RoboWrestling platform using line sensors for ring detection and IR sensors for opponent tracking. The robot combines embedded control, custom PCB work, and mechanical design inside a compact competition platform.',
       imageUrl: `${basePath}images/smaller_vehicle_image.jpg`,
+      videoUrl: `${basePath}images/main_video.mp4`,
+      cadImageUrl: `${basePath}images/chassis_image.png`,
+      pcbImageUrl: `${basePath}images/pcb_image.png`,
       tags: ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'],
       details: {
         overview:
@@ -93,11 +121,11 @@ const ProjectsPage = () => {
           <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Technical Work</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <figure>
-              <img src={`${basePath}images/chassis_image.png`} alt="Robot chassis CAD view" className="aspect-[4/3] w-full object-cover" />
+              <img src={selectedItem.cadImageUrl} alt="Robot chassis CAD view" className="aspect-[4/3] w-full object-cover" />
               <figcaption className="mt-3 text-sm text-gray-500">Mechanical CAD and chassis layout.</figcaption>
             </figure>
             <figure>
-              <img src={`${basePath}images/pcb_image.png`} alt="Robot PCB design" className="aspect-[4/3] w-full object-cover" />
+              <img src={selectedItem.pcbImageUrl} alt="Robot PCB design" className="aspect-[4/3] w-full object-cover" />
               <figcaption className="mt-3 text-sm text-gray-500">Custom PCB and circuit routing.</figcaption>
             </figure>
           </div>
@@ -113,7 +141,7 @@ const ProjectsPage = () => {
                 </li>
               ))}
             </ul>
-            <video controls className="aspect-video w-full bg-black" src={`${basePath}images/main_video.mp4`}>
+            <video controls className="aspect-video w-full bg-black" src={selectedItem.videoUrl}>
               Your browser does not support the video tag.
             </video>
           </div>

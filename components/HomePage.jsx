@@ -10,7 +10,7 @@ const HomePage = () => {
   const roleNodes = [
     'Software Engineering Intern: Tokyo Electron (TEL)',
     'Hardware Researcher: EPIC Lab (Hip Exoskeletons)',
-    'Autonomous Robotics: Krabbi (500g Sumo Bot)',
+    'Autonomous Robotics: Waluigi (500g Sumo Bot) & Levi (3kg Sumo Bot)',
   ];
 
   const handleMouseMove = (event) => {
@@ -54,7 +54,7 @@ const HomePage = () => {
         >
           <div className="pointer-events-none absolute inset-0 mix-blend-screen" style={{ background: glare }} />
 
-          <div className="relative z-10 grid h-full grid-rows-[auto_1fr_auto_auto]">
+          <div className="relative z-10 grid h-full grid-rows-[auto_auto_1fr_auto]">
             <div className="flex items-start justify-between gap-6">
               <div className="font-nav text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
                 DOC-REF: RW-2028
@@ -64,18 +64,18 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center">
+            <div className="mt-4 flex flex-col items-center text-center">
               <h1 className="text-2xl font-extrabold uppercase tracking-[0.22em] text-gray-950 md:text-3xl">
                 Raymond Wang
               </h1>
-              <p className="font-nav mt-4 text-[11px] font-semibold uppercase leading-5 tracking-[0.16em] text-gray-700">
-                Electrical Engineering // CHEA & Robotics
+              <p className="font-nav mt-2 text-sm font-semibold uppercase leading-6 tracking-[0.12em] text-gray-700">
+                Electrical Engineering
               </p>
             </div>
 
-            <div className="mb-4 grid gap-1.5">
+            <div className="mt-4 grid content-start gap-1.5">
               {roleNodes.map((role) => (
-                <div key={role} className="font-nav text-[10px] font-semibold leading-4 text-[#35224f]">
+                <div key={role} className="font-nav text-xs font-semibold leading-5 text-[#35224f]">
                   &gt; {role}
                 </div>
               ))}
@@ -83,7 +83,6 @@ const HomePage = () => {
 
             <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
               <div className="h-[2px] w-20 bg-[#35224f]" />
-              <BarcodeMark />
             </div>
           </div>
         </section>
@@ -91,17 +90,5 @@ const HomePage = () => {
     </div>
   );
 };
-
-const BarcodeMark = () => (
-  <div className="grid h-12 w-28 grid-cols-12 gap-[3px]" aria-hidden="true">
-    {[2, 8, 4, 10, 6, 12, 5, 9, 3, 11, 7, 4].map((height, index) => (
-      <span
-        key={`${height}-${index}`}
-        className="self-end bg-[#35224f]"
-        style={{ height: `${height * 4}px` }}
-      />
-    ))}
-  </div>
-);
 
 export default HomePage;
