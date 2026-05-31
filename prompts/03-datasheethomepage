@@ -1,0 +1,61 @@
+# Design Specification: Homepage as "Component Datasheet"
+
+## 1. Objective
+Redesign the homepage to visually and structurally mimic the first page of a standard semiconductor datasheet (e.g., Texas Instruments, Analog Devices). This replaces the traditional "Headshot + About Me" blurb with a clever, highly structured, and strictly formatted presentation of the user's skills and background, appealing directly to electrical engineering hiring managers.
+
+## 2. Global Aesthetic & Layout
+* **Color Palette:** Pure white background (`bg-white`), black primary text (`text-gray-900`), and dark purple accents (`#35224f`) for borders and key highlights.
+* **Typography:** Extensive use of monospace fonts (e.g., JetBrains Mono, Fira Code) for headers, labels, and metadata. Standard legible sans-serif for body text.
+* **Structure:** Brutalist and print-inspired. Use sharp corners (`rounded-none`), heavy use of 1px and 2px solid gray/black borders to create sections, and tight grid alignments.
+
+## 3. Datasheet Layout Specification
+The page should be divided into distinct bordered sections, reading top-to-bottom like a technical PDF.
+
+### A. Document Header (Top Bar)
+* **Left:** A stylized "company" logo (e.g., a simple geometric shape or the user's initials in a stark font).
+* **Center:** Large, bold text: `RAYMOND WANG`
+* **Right:** Document metadata in small monospace: 
+    * `REV: 2026.05`
+    * `STATUS: ACTIVE`
+    * `LOCATION: LOWELL, MA`
+* *Styling:* This section should have a thick bottom border (e.g., 2px solid `#35224f`).
+
+### B. Title & Subtitle Area
+* **Main Title:** `RW-2028: High-Performance Electrical & Robotics Engineer`
+* **Subtitle (Features):** `Optimized for Hardware Integration, PCB Routing, and Autonomous Control`
+
+### C. The Two-Column Core
+Below the title, split the page into a two-column grid (`grid-cols-2` on md+ screens) separated by a 1px border.
+
+#### Column 1 (Left): "Features" & "Applications"
+* **FEATURES (Bullet point list in a bordered box):**
+    * Full-stack hardware routing and power delivery optimization.
+    * Sensor integration (IR, LiDAR) and autonomous control algorithms.
+    * Software development for industrial semiconductor infrastructure.
+    * Custom CachyOS Linux kernel configuration for low-latency execution.
+* **APPLICATIONS (Where the skills are used):**
+    * Robotic Hip Exoskeletons (EPIC Lab)
+    * Semiconductor Manufacturing Machines (Tokyo Electron)
+    * Autonomous 500g Mini-Sumo Robotics (RoboWrestling)
+    * Predictive Web Infrastructure (Keyboard Community)
+
+#### Column 2 (Right): "General Description" & "Absolute Maximum Ratings"
+* **GENERAL DESCRIPTION:**
+    * A stylized replacement for the "About Me" paragraph. 
+    * *Text:* "The RW-2028 is an electrical engineering undergraduate specializing in Computing Hardware & Emerging Architectures (CHEA). Designed to bridge the gap between high-level system logic and low-level physical actuation, this unit is currently undergoing summer calibration as a Software Engineering Intern at Tokyo Electron (TEL) while maintaining research operations at Georgia Tech's EPIC Lab."
+* **ABSOLUTE MAXIMUM RATINGS (A table or list):**
+    * `Operating Location: Lowell, MA`
+    * `Graduation Target: Spring 2028`
+    * `Barista Experience: 3 Years (Required for sustained compilation)`
+
+### D. Simplified Pinout / Block Diagram (Optional Visual Element)
+* At the bottom or floating in the right column, include a very simple, static SVG drawing.
+* Draw an IC (Integrated Circuit) chip graphic with "pins".
+* Label the pins with core skills: `PIN 1: KICAD`, `PIN 2: C++`, `PIN 3: LINUX`, `PIN 4: REACT`.
+
+## 4. Interaction Guidelines
+* This page is primarily static to mimic a printed PDF.
+* **Hover States:** Apply subtle dark purple backgrounds or text color changes when hovering over the "Applications" items, turning them into active links that route to the respective project pages.
+
+## 5. Mobile Responsiveness
+* On mobile screens, collapse the two-column grid into a single column, stacking "Features" above "Description". Ensure borders remain consistent.

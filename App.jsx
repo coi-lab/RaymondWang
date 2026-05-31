@@ -14,24 +14,29 @@ const pages = [
   { id: 'about', label: 'About', component: AboutPage },
   { id: 'resume', label: 'Resume', component: ResumePage },
   { id: 'projects', label: 'Projects', component: ProjectsPage },
-  { id: 'experience', label: 'Experience', component: ExperiencePage },
   { id: 'achievements', label: 'Achievements', component: AchievementsPage },
+];
+
+const hiddenPages = [
+  { id: 'experience', label: 'Experience', component: ExperiencePage },
   { id: 'goals', label: 'Goals', component: GoalsPage },
 ];
+
+const allPages = [...pages, ...hiddenPages];
 
 const App = () => {
   const initialPage = window.location.hash.replace('#', '');
   const [activePage, setActivePage] = useState(
-    pages.some((page) => page.id === initialPage) ? initialPage : 'home'
+    allPages.some((page) => page.id === initialPage) ? initialPage : 'home'
   );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const ActiveComponent = pages.find((page) => page.id === activePage)?.component || HomePage;
+  const ActiveComponent = allPages.find((page) => page.id === activePage)?.component || HomePage;
 
   useEffect(() => {
     const syncPageFromHash = () => {
       const pageId = window.location.hash.replace('#', '');
-      setActivePage(pages.some((page) => page.id === pageId) ? pageId : 'home');
+      setActivePage(allPages.some((page) => page.id === pageId) ? pageId : 'home');
     };
 
     window.addEventListener('popstate', syncPageFromHash);

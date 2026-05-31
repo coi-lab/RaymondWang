@@ -1,67 +1,107 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
 
-const HomePage = ({ changePage }) => {
-  const basePath = import.meta.env.BASE_URL;
+const HomePage = () => {
+  const [transform, setTransform] = useState('rotateX(0deg) rotateY(0deg) translateZ(0px)');
+  const [glare, setGlare] = useState(
+    'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.50), rgba(53,34,79,0.08) 22%, transparent 54%)'
+  );
+  const [isResting, setIsResting] = useState(true);
+
+  const roleNodes = [
+    'Software Engineering Intern: Tokyo Electron (TEL)',
+    'Hardware Researcher: EPIC Lab (Hip Exoskeletons)',
+    'Autonomous Robotics: Krabbi (500g Sumo Bot)',
+  ];
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateY = ((x - centerX) / centerX) * 14;
+    const rotateX = -((y - centerY) / centerY) * 14;
+    const glareX = (x / rect.width) * 100;
+    const glareY = (y / rect.height) * 100;
+
+    setIsResting(false);
+    setTransform(`rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(30px)`);
+    setGlare(
+      `radial-gradient(circle at ${glareX.toFixed(1)}% ${glareY.toFixed(1)}%, rgba(255,255,255,0.70), rgba(53,34,79,0.14) 24%, transparent 56%)`
+    );
+  };
+
+  const handleMouseLeave = () => {
+    setIsResting(true);
+    setTransform('rotateX(0deg) rotateY(0deg) translateZ(0px)');
+    setGlare('radial-gradient(circle at 50% 50%, rgba(255,255,255,0.50), rgba(53,34,79,0.08) 22%, transparent 54%)');
+  };
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12 md:py-16">
-      <section className="grid gap-10 border-b border-gray-200 pb-12 md:grid-cols-[220px_1fr] md:gap-16">
-        <div>
-          <img
-            src={`${basePath}images/pfpimage.jpg`}
-            alt="Raymond Wang"
-            className="aspect-square w-44 object-cover md:w-full"
-          />
-        </div>
+    <div className="flex min-h-[calc(100vh-7rem)] items-center justify-center px-5 py-12">
+      <div className="w-full max-w-[30rem]" style={{ perspective: '1000px' }}>
+        <section
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className={`relative h-[17rem] w-full overflow-hidden rounded-2xl border border-gray-300 bg-[#fafafa] p-6 shadow-[4px_4px_0px_#35224f] ${
+            isResting ? 'transition-transform duration-300 ease-out' : ''
+          }`}
+          style={{
+            transform,
+            transformStyle: 'preserve-3d',
+          }}
+          aria-label="Interactive Raymond Wang business card"
+        >
+          <div className="pointer-events-none absolute inset-0 mix-blend-screen" style={{ background: glare }} />
 
-        <div className="max-w-3xl">
-          <p className="font-nav mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">
-            Computer Engineering at Georgia Tech
-          </p>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight text-gray-950 md:text-6xl">
-            Raymond Wang
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-700">
-            I build across robotics, machine learning, embedded systems, and web tools. My work is
-            usually hands-on: turning sensors, boards, models, and code into things that move,
-            measure, or help people understand a problem better.
-          </p>
+          <div className="relative z-10 grid h-full grid-rows-[auto_1fr_auto_auto]">
+            <div className="flex items-start justify-between gap-6">
+              <div className="font-nav text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+                DOC-REF: RW-2028
+              </div>
+              <div className="font-nav text-right text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
+                STATUS: ACTIVE
+              </div>
+            </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => changePage('projects')}
-              className="inline-flex items-center gap-2 px-0 py-2 text-sm font-semibold text-[#35224f] underline underline-offset-4 transition-opacity hover:opacity-70"
-            >
-              View Projects
-              <ArrowUpRight size={16} />
-            </button>
-            <button
-              type="button"
-              onClick={() => changePage('resume')}
-              className="inline-flex items-center gap-2 px-0 py-2 text-sm font-semibold text-gray-700 underline underline-offset-4 transition-colors hover:text-[#35224f]"
-            >
-              Resume
-            </button>
+            <div className="flex flex-col items-center justify-center text-center">
+              <h1 className="text-2xl font-extrabold uppercase tracking-[0.22em] text-gray-950 md:text-3xl">
+                Raymond Wang
+              </h1>
+              <p className="font-nav mt-4 text-[11px] font-semibold uppercase leading-5 tracking-[0.16em] text-gray-700">
+                Electrical Engineering // CHEA & Robotics
+              </p>
+            </div>
+
+            <div className="mb-4 grid gap-1.5">
+              {roleNodes.map((role) => (
+                <div key={role} className="font-nav text-[10px] font-semibold leading-4 text-[#35224f]">
+                  &gt; {role}
+                </div>
+              ))}
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+              <div className="h-[2px] w-20 bg-[#35224f]" />
+              <BarcodeMark />
+            </div>
           </div>
-        </div>
-      </section>
-
-      <section className="grid gap-8 py-10 md:grid-cols-3">
-        {[
-          ['Focus', 'Robotics, embedded systems, machine learning, and practical engineering.'],
-          ['Current Work', 'RoboWrestling hardware, sensor integration, PCB design, and controls.'],
-          ['Background', 'Research, teaching, technical competitions, and project-based learning.'],
-        ].map(([title, copy]) => (
-          <div key={title} className="border-t border-gray-200 pt-5">
-            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">{title}</h2>
-            <p className="mt-3 text-sm leading-6 text-gray-600">{copy}</p>
-          </div>
-        ))}
-      </section>
+        </section>
+      </div>
     </div>
   );
 };
+
+const BarcodeMark = () => (
+  <div className="grid h-12 w-28 grid-cols-12 gap-[3px]" aria-hidden="true">
+    {[2, 8, 4, 10, 6, 12, 5, 9, 3, 11, 7, 4].map((height, index) => (
+      <span
+        key={`${height}-${index}`}
+        className="self-end bg-[#35224f]"
+        style={{ height: `${height * 4}px` }}
+      />
+    ))}
+  </div>
+);
 
 export default HomePage;

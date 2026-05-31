@@ -1,0 +1,45 @@
+# Design Specification: Homepage as "Interactive 3D Business Card" - Rev 2
+
+## 1. Objective
+Refesign the homepage to feature a single, interactive 3D business card centered in the viewport, significantly reducing its dimensions relative to the implementation shown in `image_4.png`. This version must restore missing information, implement a functional glare effect, add rounded corners, and ensure proper data-mapping, all while strictly adhering to the clean, academic, Anthropic-inspired palette (white background, gray/black text, dark purple `#35224f` accents).
+
+## 2. Structural & Layout Corrections (Vs. `image_4.png`)
+* **Card Dimensions:** The card shown in `image_4.png` is too large. Reduce the dimensions to a standard business card aspect ratio (e.g., `w-[30rem] h-[17rem]`).
+* **Card Positioning:** The card must remain perfectly centered in the viewport, framed by generous white space.
+* **Rounded Corners:** Apply smooth, clean rounded corners to the card (Tailwind `rounded-2xl` or `rounded-3xl`) to move away from the harsh sharp edges of `image_4.png`.
+
+## 3. Data & Content Restoration
+The blank, dark purple block in `image_4.png` must be filled with real content, mapped specifically from the user's background.
+
+### Card Front Layout (Populated):
+* **Document Ref (Top Left - restored):** Keep `DOC-REF: RW-2028` (Monospace, gray).
+* **Status (Top Right - restored):** Keep `STATUS: ACTIVE` (Monospace, gray).
+* **Name (Center):** Keep **RAYMOND WANG** (Large, tracked spacing).
+* **Title (Center):** Keep "ELECTRICAL ENGINEERING // CHEA & ROBOTICS" (Medium).
+
+#### *Restored Data Nodes (In the previously blank purple area):*
+* A minimalist list or grid of your current professional and research roles, using the dark purple accent and monochrome palette.
+    1. `> Software Engineering Intern: Tokyo Electron (TEL)`
+    2. `> Hardware Researcher: EPIC Lab (Hip Exoskeletons)`
+    3. `> Autonomous Robotics: Krabbi (500g Sumo Bot)`
+
+#### Card Reverse Layout (Optional):
+If the AI supports two-sided card modeling, populate the reverse with contact details (e.g., LinkedIn, Git).
+
+## 4. Interaction & Effects (Restore & Enhance)
+
+### A. The 3D Hover Interaction (Preserve)
+Ensure the wrapper around the card still has `perspective: 1000px` applied. The card must track the user's mouse movements, tilting in 3D space (`rotateX` and `rotateY`). *Crucially, add a subtle `z-axis` lift on hover (`translateZ(30px)`) to make the card appear to float slightly.*
+
+### B. The Glare/Sheen Effect (Mandatory Fix)
+To make the card look less flat than in `image_4.png`, a functional surface glare must be added.
+* Use an absolutely positioned linear or radial-gradient overlay inside the card.
+* **The Interaction:** This sheen layer's position must update on `onMouseMove`. Map the mouse `x` and `y` coordinates to the gradient's focus point, creating a light reflection that smoothly sweeps across the surface of the card as it tilts.
+
+## 5. Aesthetics & Typography
+* **Global Background:** Pure White (`bg-white`).
+* **Card Colors:** Clean White Card with thin borders and sharp text. Dark purple accents (`#35224f`) are used for bullet points and subtle graphics.
+* **Typography:** Maintain `JetBrains Mono` or `Fira Code` for all metadata and list items.
+
+## 6. Layout Context (Navigation & Footer)
+Ensure the clean global navigation bar (showing Home, Projects, About, etc.) and the minimalist footer (with Git, LinkedIn icons) are visible and properly aligned in the final layout.

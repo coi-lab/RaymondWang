@@ -1,0 +1,73 @@
+# Design Specification: Homepage as "Interactive Research Directory"
+
+## 1. Objective
+Redesign the homepage to feature a clean, human-centric introduction followed by an interactive, two-column "Research Directory." This directory should emulate the Anthropic "Latest Updates" section, utilizing a scrollable list on the left and a sticky, dynamic image preview pane on the right that updates on hover.
+
+## 2. Global Aesthetic & Styling
+* **Color Palette:** Pure white background (`bg-white`), black primary text (`text-gray-900`), and dark purple accents (use the existing `#35224f`) for active states and subtle highlights.
+* **Typography:** Use a legible sans-serif for main headings and descriptions. Retain monospace fonts (`JetBrains Mono` or `Fira Code`) strictly for metadata, numbers, and tags to maintain a technical feel.
+* **Structure:** Minimalist, brutalist, and print-inspired. Use sharp corners (`rounded-none`) and thin 1px borders (`border-gray-200`) to separate rows. Remove all drop shadows, heavy gradients, and background cards.
+
+## 3. Top Section: The Hero Introduction
+* **Layout:** A single column, occupying the top portion of the page. It should have generous padding (e.g., `py-20` or `py-24`) to give the text room to breathe.
+* **Content:** A large, highly readable typographic block.
+    * *Heading:* "Raymond Wang" (Large, bold).
+    * *Sub-heading/Body:* "Electrical Engineering at Georgia Tech. Focused on Computing Hardware & Emerging Architectures (CHEA) and Robotics & Autonomous Systems. Bridging the gap between high-level system logic and low-level physical actuation."
+* **Styling:** Keep it entirely uncrowded. No borders around this section, just a 1px border at the very bottom separating it from the directory below.
+
+## 4. Bottom Section: The Interactive Directory
+Below the introduction, implement a two-column CSS Grid layout (e.g., `grid-cols-12` on desktop).
+
+### Left Column: Scrollable List (e.g., `col-span-7`)
+* **Row Structure:** Create a list of horizontal flex containers representing distinct projects/roles.
+* **Row Elements:**
+    * **Index/Number:** `01`, `02`, etc. (Monospace, muted gray).
+    * **Title:** E.g., "Tokyo Electron" (Medium/Bold weight).
+    * **Role/Tag:** E.g., "SWE INTERN" (Monospace, uppercase, small).
+* **Styling:** Each row is separated by a 1px bottom border. Generous vertical padding (`py-6` or `py-8`).
+* **Interaction:** Add an `onMouseEnter` event to update an `activeDirectoryItem` state. When active, change the title text color or add a subtle left-border using the `#35224f` dark purple accent.
+
+### Right Column: Sticky Preview Pane (e.g., `col-span-5`)
+* **Layout:** Use `sticky top-24` (or similar) so the preview container stays locked in the viewport while the left column scrolls.
+* **Image Box:** A clean bounding box displaying the `imageUrl` of the currently active item. Use `object-cover` and a smooth opacity transition (`transition-opacity duration-300`) for swaps.
+* **Description Area:** Positioned directly below the image. Display a 1-2 sentence description associated with the active item.
+
+## 5. Mobile Behavior
+* On screens smaller than `md` or `lg`, collapse the two-column grid.
+* Hide the sticky right column. 
+* Instead, render the image and description inline underneath the row title, or disable the hover interaction completely and default to a standard vertical list.
+
+## 6. Required Data Schema
+Use this initial state to populate the directory:
+
+```javascript
+const directoryData = [
+  {
+    id: "01",
+    title: "Tokyo Electron (TEL)",
+    tag: "SWE INTERN",
+    description: "Developing software solutions and high-level system logic for advanced semiconductor manufacturing machines.",
+    imageUrl: "/images/tel-placeholder.jpg" 
+  },
+  {
+    id: "02",
+    title: "EPIC Lab",
+    tag: "HARDWARE RESEARCHER",
+    description: "Designing and routing custom PCBs for robotic hip exoskeletons, focusing on efficient power delivery for human-assistive technology.",
+    imageUrl: "/images/epic-placeholder.jpg"
+  },
+  {
+    id: "03",
+    title: "RoboWrestling",
+    tag: "AUTONOMOUS ROBOTICS",
+    description: "Mechanical design, sensor integration, and autonomous edge-control algorithms for 500g mini-sumo wrestling robots like Krabbi.",
+    imageUrl: "/images/krabbi-placeholder.jpg"
+  },
+  {
+    id: "04",
+    title: "Web Infrastructure",
+    tag: "FULL-STACK",
+    description: "Developed predictive models for mechanical keyboard pricing and managed web infrastructure facilitating community hardware group buys.",
+    imageUrl: "/images/web-placeholder.jpg"
+  }
+];
