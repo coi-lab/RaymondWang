@@ -6,10 +6,30 @@ const ProjectsPage = () => {
 
   const publishData = [
     {
+      id: 'levi-waluigi',
+      date: 'In Progress',
+      category: 'Robotics',
+      title: 'Levi and Waluigi Sumo Robots',
+      description:
+        'Work in progress.',
+      imageUrl: null,
+      tags: ['Robotics', 'Autonomous Control', 'Sumo'],
+    },
+    {
+      id: 'keyboard-price-watch',
+      date: 'In Progress',
+      category: 'Machine Learning',
+      title: 'Keyboard Switch Price Watch',
+      description:
+        'Work in progress.',
+      imageUrl: null,
+      tags: ['Python', 'Pricing', 'Group Buys'],
+    },
+    {
       id: 'krabbi-2025',
       date: 'Fall 2025',
       category: 'Robotics',
-      title: "Mini-Sumo Bot 'Krabbi'",
+      title: "500g Sumo Bot 'Krabbi': Flag robot",
       description:
         'Autonomous mini-sumo robot iteration focused on competition-ready behavior, sensor response, and robust edge-control for 500g RoboWrestling.',
       imageUrl: `${basePath}images/krabbi.jpg`,
@@ -34,7 +54,7 @@ const ProjectsPage = () => {
       id: 'krabbi',
       date: 'Fall 2024',
       category: 'Robotics',
-      title: "Mini-Sumo Bot 'Krabbi' Sensor Integration",
+      title: "500g Sumo Bot 'Luigi': Basic Bot",
       description:
         'Autonomous RoboWrestling platform using line sensors for ring detection and IR sensors for opponent tracking. The robot combines embedded control, custom PCB work, and mechanical design inside a compact competition platform.',
       imageUrl: `${basePath}images/smaller_vehicle_image.jpg`,
@@ -54,26 +74,6 @@ const ProjectsPage = () => {
           'Reached Top 16 at the Florida MakerFaire tournament.',
         ],
       },
-    },
-    {
-      id: 'pcb-template',
-      date: 'Add Date',
-      category: 'PCB Design',
-      title: 'Custom Embedded System Power Delivery',
-      description:
-        'Template entry for a future KiCad or embedded hardware project. Add notes about the schematic, routing strategy, constraints, and what the board enabled.',
-      imageUrl: null,
-      tags: ['KiCad', 'PCB', 'Power'],
-    },
-    {
-      id: 'ml-template',
-      date: 'Add Date',
-      category: 'Research',
-      title: 'Machine Learning Project',
-      description:
-        'Template entry for a future research or machine learning project. Add the problem, method, data source, and the measurable result of the work.',
-      imageUrl: null,
-      tags: ['Python', 'Modeling', 'Data'],
     },
   ];
 
