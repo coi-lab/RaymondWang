@@ -32,6 +32,12 @@ const ProjectsPage = () => {
           'In the midst of this video however, at GoogleIO they announced the univeral cart which would allow users to track and keep track of different items across the internet. So here I am thinking about how I could twist this project into something new. I realized that through a past hobby of mine keyboard building used a lot of niche websites and was quite hard to keep track of anything really.',
           'So let us begin with the first step. '
         ],
+        conclusion: [
+          'This project started as a simple price checker, but it turned into a much larger lesson in scraping, data cleaning, automation, and working with AI as a coding partner.',
+          'The biggest takeaway was that the hard part was not just collecting data. It was making messy real-world product names, quantities, prices, and vendor structures consistent enough to trust.',
+          'From here, the next step is to keep building the historical dataset and use it as the foundation for better price prediction, anomaly detection, and trend analysis. So I will see you next time when I collect enough data to pull this off.',
+          'For now onto the next project ->'
+        ],
         sections: [
           {
             eyebrow: 'AI???',
@@ -51,19 +57,36 @@ const ProjectsPage = () => {
             body: [
               'Now we move on to the grunt work of the project, web scraping and data storage. I quickly realized through scraping my second website that I had to make some kind of main function that all these scrapers could reference in order to efficiently scrape multiple of these niche keybaord websites. Thus the Core Engine came to be to handle the SQLite database, and the rest neing serperate modular scrapers for vendros like KBDFans, CannonKeys, and DiviniKeys.',
               'A couple things I faced along the way though. Scraping became more and more hard and time consuming, inspecting HTML would not cut it.',
-              'The JSON-First Approach'
+              'The JSON-First Approach: many website used Shopify and they often hid JSON objects in teh backend. I shifted the scrapers to hunt for APIs and SSR data frist before going back to raw HTML parsing.',
+              'Pagination and API Cursors: not all sites have the same ?page=2 URL. Some logic was needed to follow API cursors and infinite scrool buttons to get the full catalog.',
+              'Ethical Rate Limiting: this is kind of a funny one. After getting hit with 429 Too Many Requests erros. I had to limit the amount of requests I was making to these website by adding sleep timers.'
             ],
               
-            imageUrl: `${basePath}images/keyboard-switch-price-tracker/hoverSwitchWatcher.png`,
-            caption: 'Template image slot for the historical price graph UI.',
+            imageUrl: `${basePath}images/keyboard-switch-price-tracker/vendorsLivePrices.png`,
+            caption: 'The result of daily scraping across multiple vendors',
           },
           {
-            eyebrow: 'Modeling',
-            title: 'Exploring prediction and anomaly detection',
-            body:
-              'The ML layer is designed as an experiment space for predicting likely price ranges and flagging listings that differ sharply from recent market behavior.',
-            imageUrl: `${basePath}images/keyboard-switch-price-tracker/hoverSwitchWatcher.png`,
-            caption: 'Template image slot for model results, feature importance, or evaluation notes.',
+            eyebrow: 'the hard stuff (data engineering)',
+            title: 'Sorting Switch Names and Identifying Quantities',
+            body:[
+              'I realized that scraping was not even most of the work, it was scraping data form multiple vendors and identifying the same switches and their quantities. I had multiple problems with just slightly different switch names leading to the sorting them into the same one, or having obsurd switch prices because every website displayed their quantities differently.',
+              'Fuzzy String Matching: using a library called thefuzz and utilizing the token_set_ratio algorithm, I could mathematically determine if Gateron Milky Yellow and Gateron Milky Yello 2.0 was the same switch.',
+              'The subset trap and conflict dictionaries: through each error and fix I built a mutually exclusive conflict dictionary to stop the algorithm from merging two switches that sounded similar, things like telling scrapers to differetiate between tactile and linear or different colors/flowers/tastes whatever that manafacturer was into at the time. ',
+              'Regex and Unit Price Conversion: I want to show the price per switch. Never had I ever thought that something like a quantity would be this hard to scrape. So different ways of scraping the quantities were slowly found out for each vendor. the I usd Regex to extract the pack quantities and automatically convert everyhing to price per switch.'
+            ],
+            imageUrl: `${basePath}images/keyboard-switch-price-tracker/pinnedHistoricalTrends.png`,
+            caption: 'Live graphins of updates switch prices as long as a showcase of the pin function for switches to look out for.',
+          },
+          {
+            eyebrow: 'Good stuff for the eyeballs',
+            title: 'Frontend and Cloud Automation',
+            body:[
+              'Flask and AJAX Front End: Built a local web interface using Python and Flask. To prevent cluttering on the screen a three column design was used. ',
+              'GitHub Actions Workflow: to have continuous daily scraping for my eventual future market prediction model. So I learned to setup a GitHub Actions workflow to boot up Ubuntu server at 4:00 AM to run the scrapers and push the data back to my repo.',
+              'Git version control: I had "known" how to use git before this but this really showed me something more, rynning into merge conflicts when my local server and Github were fighting my db file.'
+            ],
+            imageUrl: `${basePath}images/keyboard-switch-price-tracker/workFlows.png`,
+            caption: 'The daily scraping through github actions.',
           },
         ],
       },
@@ -118,6 +141,13 @@ const ProjectsPage = () => {
   const [hoveredItem, setHoveredItem] = useState(publishData[0]);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const selectedItem = publishData.find((item) => item.id === selectedItemId);
+  const renderParagraphs = (content, className) => (
+    <div className={className}>
+      {(Array.isArray(content) ? content : [content]).map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+    </div>
+  );
 
   if (selectedItem?.details?.layout === 'blog') {
     return (
@@ -141,14 +171,7 @@ const ProjectsPage = () => {
                 <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-gray-950 md:text-6xl">
                   {selectedItem.title}
                 </h1>
-                <div className="mt-6 max-w-3xl space-y-5 text-lg leading-8 text-gray-700">
-                  {(Array.isArray(selectedItem.details.intro)
-                    ? selectedItem.details.intro
-                    : [selectedItem.details.intro]
-                  ).map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
+                {renderParagraphs(selectedItem.details.intro, 'mt-6 max-w-3xl space-y-5 text-lg leading-8 text-gray-700')}
               </div>
               <img
                 src={selectedItem.imageUrl}
@@ -172,11 +195,23 @@ const ProjectsPage = () => {
                   <h2 className="text-2xl font-bold leading-tight tracking-tight text-gray-950 md:text-3xl">
                     {section.title}
                   </h2>
-                  <p className="mt-5 leading-7 text-gray-700">{section.body}</p>
+                  {renderParagraphs(section.body, 'mt-5 space-y-4 leading-7 text-gray-700')}
                 </div>
               </section>
             ))}
           </div>
+
+          {selectedItem.details.conclusion && (
+            <section className="border-t border-gray-200 py-10">
+              <p className="font-nav mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">
+                Conclusion
+              </p>
+              <h2 className="text-2xl font-bold leading-tight tracking-tight text-gray-950 md:text-3xl">
+                Where the project landed
+              </h2>
+              {renderParagraphs(selectedItem.details.conclusion, 'mt-5 max-w-3xl space-y-4 leading-7 text-gray-700')}
+            </section>
+          )}
         </article>
       </div>
     );
