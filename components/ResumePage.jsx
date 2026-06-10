@@ -2,7 +2,7 @@ import React from 'react';
 import { Download, ExternalLink } from 'lucide-react';
 const ResumePage = () => {
   const basePath = import.meta.env.BASE_URL;
-  const resumeUrl = `${basePath}images/Raymond_General_Resume.pdf`;
+  const resumeUrl = `${basePath}documents/Raymond_General_Resume.pdf`;
 
   return (
     <div className="mx-auto max-w-5xl px-5 pb-12 pt-6 md:pb-16 md:pt-8">

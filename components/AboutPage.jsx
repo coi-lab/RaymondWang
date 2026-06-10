@@ -8,7 +8,7 @@ const AboutPage = () => {
       <section className="grid gap-10 border-b border-gray-200 pb-12 md:grid-cols-[220px_1fr] md:gap-16">
         <div>
           <img
-            src={`${basePath}images/pfpimage.jpg`}
+            src={`${basePath}images/about/pfpimage.jpg`}
             alt="Raymond Wang"
             className="aspect-square w-44 object-cover md:w-full"
           />
