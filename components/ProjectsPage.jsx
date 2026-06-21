@@ -92,6 +92,52 @@ const ProjectsPage = () => {
       },
     },
     {
+      id: 'semipipeline',
+      date: 'In Progress',
+      category: 'Machine Learning',
+      title: 'SemiPipeline: Semiconductor Failure Detection',
+      description:
+        'A notebook-based machine learning project using SECOM manufacturing sensor data to detect rare failed wafer runs with leakage-aware preprocessing, XGBoost, feature selection, and PySpark auditing.',
+      imageUrl: null,
+      tags: ['Python', 'XGBoost', 'scikit-learn', 'PySpark', 'Manufacturing Data'],
+      details: {
+        layout: 'case-study',
+        overview:
+          'SemiPipeline explores whether anonymized semiconductor manufacturing sensor readings can be used to predict failed wafer runs. The project focuses on the hard part of the dataset: failures are rare, so raw accuracy can look strong while the model misses the events that matter most.',
+        researchQuestion:
+          'Can sensor data from semiconductor manufacturing runs be used to detect failed wafer runs with useful precision and recall, despite class imbalance and missing sensor values?',
+        methodology: [
+          'Loaded SECOM sensor readings and pass/fail labels, then converted labels into a modern binary classification format.',
+          'Removed high-missing and constant sensor columns before modeling.',
+          'Built train, validation, and test splits to reduce leakage during preprocessing and threshold selection.',
+          'Used MinMaxScaler, KNNImputer, feature selection, and XGBoost inside scikit-learn workflows.',
+          'Tuned class weighting and decision thresholds around average precision and failure-class performance instead of raw accuracy.',
+          'Explored a PySpark version of the cleaning process to reproduce the pandas cleaned shape in a distributed workflow.',
+        ],
+        metrics: [
+          ['Rows', '1,567'],
+          ['Raw columns', '592'],
+          ['Cleaned columns', '448'],
+          ['Fail examples', '104'],
+          ['Test accuracy', '0.88'],
+          ['Fail precision / recall', '0.24 / 0.38'],
+          ['Average precision', '0.2488'],
+        ],
+        results: [
+          'Baseline XGBoost models reached high overall accuracy but initially predicted zero failures, showing why accuracy was the wrong target metric.',
+          'The tuned leakage-aware pipeline began catching failed runs, with test-set failure precision of 0.24 and recall of 0.38.',
+          'The PySpark audit reproduced the pandas cleaning outcome by identifying 144 dead or heavily missing sensor columns and reaching a cleaned shape of 1,567 x 448.',
+          'A model artifact was serialized as secom_xgboost_production_v1.pkl for later loading and experimentation.',
+        ],
+        limitations: [
+          'The dataset is highly imbalanced, with only 104 failure examples.',
+          'The saved model is a learning artifact, not a production manufacturing system.',
+          'Some exploratory notebook cells use older approaches that were later improved.',
+          'The PySpark notebook still needs safer row alignment instead of relying on monotonically_increasing_id().',
+        ],
+      },
+    },
+    {
       id: 'krabbi-2025',
       date: 'Fall 2025',
       category: 'Robotics',
@@ -212,6 +258,104 @@ const ProjectsPage = () => {
               {renderParagraphs(selectedItem.details.conclusion, 'mt-5 max-w-3xl space-y-4 leading-7 text-gray-700')}
             </section>
           )}
+        </article>
+      </div>
+    );
+  }
+
+  if (selectedItem?.details?.layout === 'case-study') {
+    return (
+      <div className="mx-auto max-w-6xl px-5 py-10 md:py-14">
+        <button
+          type="button"
+          onClick={() => setSelectedItemId(null)}
+          className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
+        >
+          <ArrowLeft size={16} />
+          Back to projects
+        </button>
+
+        <article>
+          <header className="grid gap-8 border-b border-gray-200 pb-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start">
+            <div>
+              <p className="font-nav mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">
+                {selectedItem.category} / {selectedItem.date}
+              </p>
+              <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-gray-950 md:text-6xl">
+                {selectedItem.title}
+              </h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-700">{selectedItem.description}</p>
+            </div>
+            {selectedItem.imageUrl ? (
+              <img
+                src={selectedItem.imageUrl}
+                alt={`${selectedItem.title} preview`}
+                className="aspect-square w-full object-cover"
+              />
+            ) : (
+              <div className="flex aspect-square w-full items-center justify-center bg-[#35224f]">
+                <div className="font-nav text-center text-xs font-semibold uppercase tracking-[0.24em] text-white">
+                  VISUAL PLACEHOLDER
+                </div>
+              </div>
+            )}
+          </header>
+
+          <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Overview</h2>
+            <div className="space-y-6 text-gray-700">
+              <p className="leading-7">{selectedItem.details.overview}</p>
+              <div>
+                <h3 className="text-xl font-bold text-gray-950">Research Question</h3>
+                <p className="mt-3 leading-7">{selectedItem.details.researchQuestion}</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Metrics</h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {selectedItem.details.metrics.map(([label, value]) => (
+                <div key={label} className="border-t border-gray-200 pt-4">
+                  <p className="font-nav text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">{label}</p>
+                  <p className="mt-2 text-2xl font-bold text-gray-950">{value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Methodology</h2>
+            <ul className="space-y-4 text-gray-700">
+              {selectedItem.details.methodology.map((step) => (
+                <li key={step} className="border-l border-gray-200 pl-4 leading-7">
+                  {step}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Results</h2>
+            <ul className="space-y-4 text-gray-700">
+              {selectedItem.details.results.map((result) => (
+                <li key={result} className="border-l border-gray-200 pl-4 leading-7">
+                  {result}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="grid gap-10 py-10 md:grid-cols-[180px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Limitations</h2>
+            <ul className="space-y-4 text-gray-700">
+              {selectedItem.details.limitations.map((limitation) => (
+                <li key={limitation} className="border-l border-gray-200 pl-4 leading-7">
+                  {limitation}
+                </li>
+              ))}
+            </ul>
+          </section>
         </article>
       </div>
     );
