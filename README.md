@@ -1,104 +1,136 @@
-# Portfolio Website
+# Raymond Wang Portfolio Website
 
-A modern, responsive portfolio website built with React and Tailwind CSS.
+A personal portfolio website for presenting Raymond Wang's background, resume, projects, experience, and achievements.
 
-## Project Structure
+## Status
 
+Active development
+
+## Overview
+
+This project is a React-based portfolio site built to organize and present my engineering work in one place. It includes a homepage, about page, resume viewer, project showcase, achievements page, and supporting hidden pages for experience and goals.
+
+The site is focused on communicating my interests in computer engineering, robotics, machine learning, hardware systems, and project-based learning. It is designed to be useful for recruiters, professors, teammates, and future collaborators who want a quick overview of my technical background.
+
+## Features
+
+- Interactive homepage card with role highlights
+- About page with personal background and profile image
+- Resume page with embedded PDF viewer plus open/download links
+- Project showcase with detailed pages for robotics and software projects
+- Robotics project pages with CAD, PCB, image, and video assets
+- Blog-style project writeup for the keyboard switch price tracker
+- Achievements page for Science Olympiad awards
+- Hash-based navigation for GitHub Pages-friendly routing
+- Responsive layout built with Tailwind CSS
+
+## Tech Stack
+
+- Language: JavaScript / JSX
+- Frameworks/Libraries: React, Vite, Tailwind CSS, Lucide React
+- Tools: npm, GitHub Pages, gh-pages
+- Assets: PDF resume, project images, project videos
+
+## Folder Structure
+
+```txt
+RaymondWang/
+|-- components/
+|   |-- AboutPage.jsx
+|   |-- AchievementsPage.jsx
+|   |-- ExperiencePage.jsx
+|   |-- Footer.jsx
+|   |-- GoalsPage.jsx
+|   |-- HomePage.jsx
+|   |-- Navigation.jsx
+|   |-- ProjectsPage.jsx
+|   `-- ResumePage.jsx
+|-- public/
+|   |-- documents/
+|   `-- images/
+|-- App.jsx
+|-- main.jsx
+|-- index.css
+|-- index.html
+|-- package.json
+|-- tailwind.config.js
+|-- vite.config.js
+`-- README.md
 ```
-rayWebsite/
-├── components/          # React components
-│   ├── HomePage.jsx
-│   ├── AboutPage.jsx
-│   ├── ResumePage.jsx
-│   ├── GoalsPage.jsx
-│   ├── ProjectsPage.jsx
-│   ├── ExperiencePage.jsx
-│   ├── AchievementsPage.jsx
-│   └── Navigation.jsx
-├── App.jsx             # Main app component
-├── main.jsx            # Entry point
-├── index.html          # HTML template
-├── index.css           # Global styles (Tailwind)
-├── package.json        # Dependencies
-├── vite.config.js      # Vite configuration
-├── tailwind.config.js  # Tailwind CSS configuration
-└── postcss.config.js   # PostCSS configuration
+
+Generated folders such as `node_modules/` and `dist/` are not part of the main source structure.
+
+## Setup
+
+Install project dependencies:
+
+```bash
+npm install
 ```
 
-## Getting Started
+## Usage
 
-### Prerequisites
+Start the local development server:
 
-- Node.js (version 16 or higher)
-- npm or yarn
+```bash
+npm run dev
+```
 
-### Installation
-
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-
-3. **Open your browser:**
-   The app will be available at `http://localhost:5173` (or another port if 5173 is busy)
-
-### Building for Production
-
-To create a production build:
+Build the site for production:
 
 ```bash
 npm run build
 ```
 
-The built files will be in the `dist/` folder.
-
-To preview the production build:
+Preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-## Customization
+Deploy to GitHub Pages using the configured `gh-pages` script:
 
-Each page component is in its own file, making it easy to customize:
+```bash
+npm run deploy
+```
 
-- **HomePage.jsx** - Landing page with hero section and navigation cards
-- **AboutPage.jsx** - Personal information and background
-- **ResumePage.jsx** - Resume display and download
-- **GoalsPage.jsx** - Career goals and roadmap
-- **ProjectsPage.jsx** - Featured project showcase
-- **ExperiencePage.jsx** - Work experience and internships
-- **AchievementsPage.jsx** - Awards, honors, and accomplishments
+The configured homepage in `package.json` is:
 
-Simply edit the respective component file to update the content!
+```txt
+https://coi-lab.github.io/RaymondWang/
+```
 
-## Technologies Used
+## Results or Current Progress
 
-- **React** - UI library
-- **Vite** - Build tool and dev server
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide React** - Icon library
+The portfolio currently includes the main navigation, homepage, about page, resume page, project page, achievements page, footer, and supporting hidden pages for experience and goals.
 
-## Features
+Current project entries include:
 
-- ✅ Responsive design (mobile-friendly)
-- ✅ Modern UI with gradient themes
-- ✅ Smooth page transitions
-- ✅ Mobile navigation menu
-- ✅ Modular component structure
-- ✅ Easy to customize and extend
+- Levi and Waluigi Sumo Robots
+- Keyboard Switch Price Tracker to an Automated AI Data Pipeline
+- 500g Mini-Sumo Bot "Krabbi"
+- 500g Sumo Bot "Luigi"
 
-## Tips
+The project also includes public assets for the resume, profile image, robotics media, CAD/PCB visuals, and keyboard switch tracker screenshots.
 
-- Edit content directly in the component files
-- Modify colors in Tailwind classes (purple/indigo theme)
-- Add new pages by creating a new component and adding it to `App.jsx`
-- Update navigation items in `App.jsx`
+## Roadmap
 
-Enjoy building your portfolio! 🚀
+- [ ] Continue refining project descriptions and technical writeups
+- [ ] Add more complete details for Levi and Waluigi Sumo Robots
+- [ ] Review copy for spelling, grammar, and consistency
+- [ ] Add or update screenshots as projects change
+- [ ] Confirm mobile layout across common viewport sizes
+- [ ] Keep the resume PDF current
 
+## Lessons Learned
+
+This project helped practice building a modular React application with reusable page components, asset management through Vite's public folder, responsive styling with Tailwind CSS, and deployment through GitHub Pages.
+
+It also serves as a writing exercise: each project page needs to explain technical work clearly without overstating the status or results.
+
+## Notes
+
+- This is a personal portfolio site, not a production application.
+- Some project content is still marked as in progress.
+- The resume PDF and project media should be updated whenever the underlying work changes.
+- The app uses hash-based navigation so it can work smoothly on GitHub Pages.
