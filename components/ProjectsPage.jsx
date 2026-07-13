@@ -26,27 +26,37 @@ const ProjectsPage = () => {
       tags: ['Python', 'Data Pipelines', 'Machine Learning'],
       details: {
         layout: 'blog',
+        tldr: {
+          summary:
+            'I built a Python system that scrapes mechanical keyboard switch listings from niche vendors, normalizes inconsistent product names and pack sizes, stores price history in SQLite, and displays the results in a Flask interface.',
+          highlights: [
+            'A shared Core Engine supports modular scrapers for vendors including KBDFans, CannonKeys, and Divinikey.',
+            'The scrapers prefer APIs and server-rendered JSON, handle different pagination systems, and use rate limits to avoid overwhelming vendor sites.',
+            'Fuzzy matching, conflict dictionaries, regular expressions, and quantity normalization turn inconsistent listings into comparable per-switch prices.',
+            'GitHub Actions runs the collection workflow daily, building a historical dataset for future price prediction, anomaly detection, and trend analysis.',
+          ],
+        },
         intro: [
-          'The original idea was to implement a website that price checks different mechanical keyboard items across the internet.',
-          'I was inspired to do this project through Linus Tech Tips videos on different general price trackers that didnt quite fulfill what we needed out of a price checking tool. Here is the link: https://www.youtube.com/watch?v=1wEDXpc5m6A.',
-          'In the midst of this video however, at GoogleIO they announced the univeral cart which would allow users to track and keep track of different items across the internet. So here I am thinking about how I could twist this project into something new. I realized that through a past hobby of mine keyboard building used a lot of niche websites and was quite hard to keep track of anything really.',
-          'So let us begin with the first step. '
+          'The original idea was to build a website that checks the prices of mechanical keyboard products across the internet.',
+          'I was inspired by a Linus Tech Tips video about general price trackers that did not quite fulfill what we needed from a price-checking tool. Here is the video: https://www.youtube.com/watch?v=1wEDXpc5m6A.',
+          'Around the same time, Google I/O announced a universal shopping cart that would help users track products across the internet. That made me think about how I could give this project a more specific purpose. Mechanical keyboard building, a past hobby of mine, relies on many niche websites, which makes products and prices difficult to track.',
+          'So, let us begin with the first step.'
         ],
         conclusion: [
           'This project started as a simple price checker, but it turned into a much larger lesson in scraping, data cleaning, automation, and working with AI as a coding partner.',
           'The biggest takeaway was that the hard part was not just collecting data. It was making messy real-world product names, quantities, prices, and vendor structures consistent enough to trust.',
           'From here, the next step is to keep building the historical dataset and use it as the foundation for better price prediction, anomaly detection, and trend analysis. So I will see you next time when I collect enough data to pull this off.',
-          'For now onto the next project ->'
+          'For now, on to the next project ->'
         ],
         sections: [
           {
             eyebrow: 'AI???',
             title: 'Architecting the AI Workflow',
             body: [
-              'Taking this project a way to learn and utilize AI properly I began with setting a the proper filesystem to utilize Codex properly. ',
-              'I began first with a dedicated prompts/ directory to manage all generations. This taught me some imporant lessons on managing AI context.',
-              'Hierarchical Agentic Memory and Self Improving Notebooks: using a project-skills.md file to as a the AIs memory. Updating as new rules are learned, continuosly improving.',
-              'Memory Compression and T-shirt sized Prompting: In using so many tokens while prompting I realized I need to compress the memoery and break tasks down to save Codexs time and to keep it locked in.'
+              'I used this project as a way to learn how to work with AI effectively, beginning with a file structure that gave Codex the right context.',
+              'I started with a dedicated prompts/ directory to manage generated instructions. This taught me several important lessons about managing AI context.',
+              'Hierarchical agentic memory and self-improving notebooks: I use a project-skills.md file as the AI\'s memory, updating it as new rules are learned so the workflow can continuously improve.',
+              'Memory compression and T-shirt-sized prompting: after using too many tokens in broad prompts, I learned to compress the memory and break work into smaller tasks so Codex can stay focused.'
             ],
             imageUrl: `${basePath}images/keyboard-switch-price-tracker/fileSystemMechWatcher.png`,
             caption: 'File structure used for Hierarchical Agentic Memory and prompt management. The project-skills.md file is used as the AI memory, updated with new learnings and rules.',
@@ -55,11 +65,11 @@ const ProjectsPage = () => {
             eyebrow: 'Price History',
             title: 'Scraping that Web and Storing that Data',
             body: [
-              'Now we move on to the grunt work of the project, web scraping and data storage. I quickly realized through scraping my second website that I had to make some kind of main function that all these scrapers could reference in order to efficiently scrape multiple of these niche keybaord websites. Thus the Core Engine came to be to handle the SQLite database, and the rest neing serperate modular scrapers for vendros like KBDFans, CannonKeys, and DiviniKeys.',
-              'A couple things I faced along the way though. Scraping became more and more hard and time consuming, inspecting HTML would not cut it.',
-              'The JSON-First Approach: many website used Shopify and they often hid JSON objects in teh backend. I shifted the scrapers to hunt for APIs and SSR data frist before going back to raw HTML parsing.',
-              'Pagination and API Cursors: not all sites have the same ?page=2 URL. Some logic was needed to follow API cursors and infinite scrool buttons to get the full catalog.',
-              'Ethical Rate Limiting: this is kind of a funny one. After getting hit with 429 Too Many Requests erros. I had to limit the amount of requests I was making to these website by adding sleep timers.'
+              'Next came the grunt work: web scraping and data storage. By the second website, I realized that the scrapers needed a shared core to handle common work efficiently across niche keyboard vendors. The Core Engine now manages the SQLite database, while separate modular scrapers handle vendors such as KBDFans, CannonKeys, and Divinikey.',
+              'I faced several challenges along the way. Scraping became increasingly difficult and time-consuming, and inspecting raw HTML was not always enough.',
+              'The JSON-first approach: many websites use Shopify and expose useful JSON objects behind the page. I shifted the scrapers to look for APIs and server-side-rendered data first, falling back to raw HTML parsing when needed.',
+              'Pagination and API cursors: not every site uses a simple ?page=2 URL. The scrapers needed logic to follow API cursors and infinite-scroll controls to collect a complete catalog.',
+              'Ethical rate limiting: after receiving 429 Too Many Requests errors, I reduced the request rate and added delays between requests.'
             ],
               
             imageUrl: `${basePath}images/keyboard-switch-price-tracker/vendorsLivePrices.png`,
@@ -69,24 +79,24 @@ const ProjectsPage = () => {
             eyebrow: 'the hard stuff (data engineering)',
             title: 'Sorting Switch Names and Identifying Quantities',
             body:[
-              'I realized that scraping was not even most of the work, it was scraping data form multiple vendors and identifying the same switches and their quantities. I had multiple problems with just slightly different switch names leading to the sorting them into the same one, or having obsurd switch prices because every website displayed their quantities differently.',
-              'Fuzzy String Matching: using a library called thefuzz and utilizing the token_set_ratio algorithm, I could mathematically determine if Gateron Milky Yellow and Gateron Milky Yello 2.0 was the same switch.',
-              'The subset trap and conflict dictionaries: through each error and fix I built a mutually exclusive conflict dictionary to stop the algorithm from merging two switches that sounded similar, things like telling scrapers to differetiate between tactile and linear or different colors/flowers/tastes whatever that manafacturer was into at the time. ',
-              'Regex and Unit Price Conversion: I want to show the price per switch. Never had I ever thought that something like a quantity would be this hard to scrape. So different ways of scraping the quantities were slowly found out for each vendor. the I usd Regex to extract the pack quantities and automatically convert everyhing to price per switch.'
+              'I realized that scraping was not even most of the work. The harder problem was combining data from multiple vendors, identifying equivalent switches, and normalizing quantities. Slightly different product names prevented matching, while inconsistent pack sizes produced absurd per-switch prices.',
+              'Fuzzy string matching: using thefuzz library and its token_set_ratio algorithm, I could estimate whether names such as Gateron Milky Yellow and Gateron Milky Yellow 2.0 referred to the same switch family.',
+              'The subset trap and conflict dictionaries: with each matching error, I built a mutually exclusive conflict dictionary to prevent the algorithm from merging switches that only sounded similar. These rules distinguish tactile from linear switches and separate different colors, flowers, flavors, or whatever theme a manufacturer chose.',
+              'Regex and unit-price conversion: I wanted to show the price per switch, but pack quantities proved unexpectedly difficult to extract. I developed vendor-specific quantity rules, then used regular expressions to find pack sizes and automatically convert each listing to a per-switch price.'
             ],
             imageUrl: `${basePath}images/keyboard-switch-price-tracker/pinnedHistoricalTrends.png`,
-            caption: 'Live graphins of updates switch prices as long as a showcase of the pin function for switches to look out for.',
+            caption: 'Live graphs of updated switch prices alongside the pinning feature for switches to watch.',
           },
           {
             eyebrow: 'Good stuff for the eyeballs',
             title: 'Frontend and Cloud Automation',
             body:[
-              'Flask and AJAX Front End: Built a local web interface using Python and Flask. To prevent cluttering on the screen a three column design was used. ',
-              'GitHub Actions Workflow: to have continuous daily scraping for my eventual future market prediction model. So I learned to setup a GitHub Actions workflow to boot up Ubuntu server at 4:00 AM to run the scrapers and push the data back to my repo.',
-              'Git version control: I had "known" how to use git before this but this really showed me something more, rynning into merge conflicts when my local server and Github were fighting my db file.'
+              'Flask and AJAX front end: I built a local web interface using Python and Flask. A three-column design keeps the large amount of information from cluttering the screen.',
+              'GitHub Actions workflow: to collect daily data for a future market-prediction model, I learned to set up a GitHub Actions workflow that starts an Ubuntu runner at 4:00 a.m., runs the scrapers, and pushes the updated data back to the repository.',
+              'Git version control: I had used Git before, but this project gave me a deeper understanding after I encountered merge conflicts between local updates and GitHub Actions changes to the database file.'
             ],
             imageUrl: `${basePath}images/keyboard-switch-price-tracker/workFlows.png`,
-            caption: 'The daily scraping through github actions.',
+            caption: 'The daily scraping workflow running through GitHub Actions.',
           },
         ],
       },
@@ -102,17 +112,26 @@ const ProjectsPage = () => {
       tags: ['Python', 'XGBoost', 'scikit-learn', 'PySpark', 'Manufacturing Data'],
       details: {
         layout: 'case-study',
+        tldr: {
+          summary:
+            'I am building a leakage-aware machine learning pipeline that uses 592 SECOM manufacturing measurements to detect rare failed wafer runs. The main challenge is class imbalance: only 104 of 1,567 examples are failures.',
+          highlights: [
+            'Cleaning removed 144 constant or heavily missing sensor columns, leaving 448 features; PySpark reproduced the same result as pandas.',
+            'The pipeline uses train-only preprocessing, KNN imputation, scaling, feature selection, class-weighted XGBoost, and validation-based threshold tuning.',
+            'Unlike the 93%-accurate baseline that detected no failures, the current test result catches failures with 0.24 precision and 0.38 recall.',
+            'Next steps include reusable scripts, model comparisons, safer PySpark row alignment, and cost-based threshold selection.',
+          ],
+        },
         overview:
-          'SemiPipeline explores whether anonymized semiconductor manufacturing sensor readings can be used to predict failed wafer runs. The project focuses on the hard part of the dataset: failures are rare, so raw accuracy can look strong while the model misses the events that matter most.',
+          'This project began with a question: can hundreds of semiconductor sensor readings warn us when a wafer run is likely to fail? I am using the SECOM dataset to work through that question one stage at a time. The difficult part is not getting a high accuracy score. Because only 104 of the 1,567 runs failed, a model can appear accurate by predicting that every run will pass. The real goal is to catch useful failure signals without creating an overwhelming number of false alarms.',
         researchQuestion:
           'Can sensor data from semiconductor manufacturing runs be used to detect failed wafer runs with useful precision and recall, despite class imbalance and missing sensor values?',
         methodology: [
-          'Loaded SECOM sensor readings and pass/fail labels, then converted labels into a modern binary classification format.',
-          'Removed high-missing and constant sensor columns before modeling.',
-          'Built train, validation, and test splits to reduce leakage during preprocessing and threshold selection.',
-          'Used MinMaxScaler, KNNImputer, feature selection, and XGBoost inside scikit-learn workflows.',
-          'Tuned class weighting and decision thresholds around average precision and failure-class performance instead of raw accuracy.',
-          'Explored a PySpark version of the cleaning process to reproduce the pandas cleaned shape in a distributed workflow.',
+          'First came the data cleanup. I combined the raw sensor readings with their pass/fail labels, converted the labels to 0 and 1, and audited the hundreds of anonymous sensor columns. Removing columns that were constant or more than 50% empty reduced the dataset from 592 to 448 columns.',
+          'Next, I rebuilt the modeling workflow to reduce data leakage. The data is separated into training, validation, and test sets before preprocessing, so the imputer, scaler, and feature selector learn only from the training data.',
+          'For the current model, I use MinMaxScaler, KNNImputer, feature selection, and XGBoost in a scikit-learn Pipeline. Class weighting helps the model pay attention to rare failures, while average precision gives a more honest view of performance than accuracy alone.',
+          'I also tune the decision threshold on validation data. Instead of accepting the default 0.5 cutoff, I compare precision and recall to find a more useful balance between missed failures and false alarms.',
+          'Finally, I started reproducing the cleaning workflow in PySpark. The distributed audit found the same 144 dead or heavily missing columns and reached the same cleaned shape as the pandas workflow.',
         ],
         metrics: [
           ['Rows', '1,567'],
@@ -124,10 +143,24 @@ const ProjectsPage = () => {
           ['Average precision', '0.2488'],
         ],
         results: [
-          'Baseline XGBoost models reached high overall accuracy but initially predicted zero failures, showing why accuracy was the wrong target metric.',
-          'The tuned leakage-aware pipeline began catching failed runs, with test-set failure precision of 0.24 and recall of 0.38.',
-          'The PySpark audit reproduced the pandas cleaning outcome by identifying 144 dead or heavily missing sensor columns and reaching a cleaned shape of 1,567 x 448.',
-          'A model artifact was serialized as secom_xgboost_production_v1.pkl for later loading and experimentation.',
+          'The first XGBoost baseline reached about 93% accuracy, which looked promising until I saw that it predicted zero failures. That result made the central lesson of the project clear: accuracy is misleading when one class is this rare.',
+          'The current leakage-aware pipeline has started catching failed runs. On the isolated test set, it reached 0.24 failure-class precision, 0.38 recall, a 0.29 F1-score, and 0.2488 average precision. These numbers are still modest, but they represent real progress over a model that never detects a failure.',
+          'The preprocessing, feature selection, threshold tuning, and XGBoost model are now stored as a single scikit-learn Pipeline. I serialized the current version as secom_xgboost_production_v1.pkl so it can be loaded for future experiments.',
+          'The project is not finished. My next steps are to move repeated notebook code into reusable scripts, compare additional models, improve PySpark row alignment, and define the real cost tradeoff between a false alarm and a missed wafer failure.',
+        ],
+        visuals: [
+          {
+            title: 'SECOM class balance and missing-data audit',
+            note: 'Add a chart showing the 1,463 pass samples versus 104 failure samples, together with the sensor missing-value distribution.',
+          },
+          {
+            title: 'Validation precision-recall curve',
+            note: 'Add the threshold-tuning plot used to choose the current balance between failure precision and recall.',
+          },
+          {
+            title: 'Current model results',
+            note: 'Add a confusion matrix or notebook result showing how many failed wafer runs the current pipeline catches and misses.',
+          },
         ],
         limitations: [
           'The dataset is highly imbalanced, with only 104 failure examples.',
@@ -141,22 +174,61 @@ const ProjectsPage = () => {
       id: 'krabbi-2025',
       date: 'Fall 2025',
       category: 'Robotics',
-      title: "500g Mini-Sumo Bot 'Krabbi': Flag robot",
+      title: "500g Mini-Sumo Bot 'Krabbi': Flag Robot",
       description:
-        'New and improved 500g Robowrestling bot, using an STM32, IMU, servos (flag mechanism). The robot combines embedded control, custom PCB work, and strategic learning from the previous 500g Luigi.',
+        'A 500 g RoboWrestling bot that improves on Luigi with a geared, single-servo flag mechanism, collision-aware acceleration, an STM32 control system, and multiple match strategies.',
       imageUrl: `${basePath}images/krabbi-2025/krabbi.jpg`,
       videoUrl: `${basePath}images/krabbi-2025/krabbiBrazil.mp4`,
       cadImageUrl: `${basePath}images/krabbi-2025/krabbiCAD.png`,
       pcbImageUrl: `${basePath}images/krabbi-2025/krabbiPCB.png`,
       tags: ['C++', 'KiCad', 'BlackPill (STM32)', 'Rapid Prototyping', 'IMU Sensors'],
       details: {
+        tldr: {
+          summary:
+            'Krabbi improves on Luigi with two sensor-decoy flags driven by one geared servo, an STM32 control system, and IMU-based collision detection that triggers full acceleration only after the front blade reaches an opponent.',
+          highlights: [
+            'Testing showed that accelerating too early can lift a robot\'s front edge, so Krabbi approaches carefully and accelerates after detecting contact.',
+            'Swerving moves the flags across an opponent\'s sensors, while sentry mode tracks passively and commits after blade engagement.',
+            'Major problems included a repeatedly burned line-sensor pin, slow IMU processing that may have delayed other sensors, and a front plate that could trap opponents above the blade.',
+            'Krabbi earned a top-three placement at RacketJacket and reached the top 16 at RSM International in São Paulo.',
+          ],
+        },
         overview:
-          'Just like Luigi, Krabbi is a 500g sumo bot designed for the RoboJackets RoboWrestling team,. The objective? To push the opponents bot outside of the Dohyo. With this iteration, we took our learnings from Luigi and various other robots to integrate a flag mechanis, and utilize an IMU (something that no other team in the club was implementing). The flag mechanism allowed for the bot to trick the opponents bot to run into the flags like a matador and their bull. We implemented the IMU to detect collisions with the opponents bots allowing us to increase our speed temporarily to get under the oppnents bot. ',
+          'Krabbi is a 500 g sumo bot designed for the RoboJackets RoboWrestling team. We began with the goal of improving on Luigi by adding flags that could misdirect an opponent\'s sensors. What set our design apart was a geared mechanism that allowed one servo to operate both flags. We also added an IMU so the robot could recognize a collision and change its behavior during a match.',
         system:
-          'A custom PCB with a STM32 BlackPill microcontroller controlled motor drives, line sensors, IR sensors, an IMU, and a servo. The robot is powered from a 12V battery with a 5V regulator for the sensor and a 5V regulator for the servos. ',
+          'A custom PCB with an STM32 BlackPill microcontroller controls the motor drivers, line sensors, IR sensors, IMU, and the single servo connected to both flags. A 12 V battery powers the robot, with separate 5 V regulators for the sensors and servo.',
+        sections: [
+          {
+            title: 'Turning IMU Data into Collision Detection',
+            body: [
+              'Our first difficulty with the IMU was realizing that accurate orientation estimates normally require combining data from its accelerometer, gyroscope, and magnetometer. That full sensor-fusion approach was more computation than this match behavior needed.',
+              'Instead, we focused on forward and backward acceleration. A sudden, strong negative acceleration indicates that Krabbi has struck another robot. Once that collision is detected and the front blade is likely underneath the opponent, Krabbi accelerates to complete the push.',
+            ],
+          },
+          {
+            title: 'Rethinking Speed and Match Strategy',
+            body: [
+              'We initially believed that maximum speed and power were the most important advantages: hit the opponent hard, get underneath it, and keep driving. Testing showed a weakness in that approach. Many robots lift at the front under hard acceleration, allowing a slower opponent with a lower blade to get underneath first.',
+              'That discovery led to a more controlled strategy. Krabbi approaches more slowly, waits until contact and blade engagement, and then uses collision detection to trigger its acceleration. The hardware also enabled multiple behaviors. A left-right swerving mode moves the flags across the opponent\'s view, while a passive sentry mode tracks the opposing robot and commits to full speed only after Krabbi gets underneath it.',
+            ],
+          },
+          {
+            title: 'Electrical and Processing Problems',
+            body: [
+              'One line-sensor pin repeatedly burned out. Our leading suspicion is that a 5 V signal was reaching a 3.3 V receiver, although that does not yet explain why only one sensor was affected. Because the cause has not been confirmed, this remains an electrical issue to isolate and test.',
+              'The STM32 was also performing too many IMU calculations. We tried a Kalman filter to reduce noise, but the IMU response remained slow. Our current hypothesis is that this workload delayed the IR and line-sensor updates. In RoboWrestling, those delays matter because every sensor and control decision must react quickly.',
+            ],
+          },
+          {
+            title: 'Mechanical Lessons',
+            body: [
+              'The front plate created another failure mode. Even when Krabbi got underneath an opponent, the other robot could become stuck between the blade and the plate. That interference effectively canceled the advantage of our low blade tolerance and showed that getting underneath an opponent is only useful if the chassis guides it cleanly upward.',
+            ],
+          },
+        ],
         results: [
-          'Top 3 Placement at RacketJacket in Atlanta, Georgia',
-          'Top 16 at RSM Internation in Sao Paulo, Brazil',
+          'Top-three placement at RacketJacket in Atlanta, Georgia.',
+          'Top 16 at RSM International in São Paulo, Brazil.',
         ],
       },
     },
@@ -166,7 +238,7 @@ const ProjectsPage = () => {
       category: 'Robotics',
       title: "500g Sumo Bot 'Luigi': Basic Bot",
       description:
-        'Autonomous Mini-Sumo 500g bot built for the RoboJackets RoboWrestling team. The bot uses an Arduino Uno with an array of ir sensors and line sensors to autonomously detect the enemy bot and push them outside of the dohyo.',
+        'An autonomous 500 g mini-sumo bot built for the RoboJackets RoboWrestling team. The bot uses an Arduino Uno with an array of IR and line sensors to detect the opposing robot and push it outside the dohyo.',
       imageUrl: `${basePath}images/luigi-2024/smaller_vehicle_image.jpg`,
       videoUrl: `${basePath}images/luigi-2024/main_video.mp4`,
       cadImageUrl: `${basePath}images/luigi-2024/chassis_image.png`,
@@ -174,11 +246,11 @@ const ProjectsPage = () => {
       tags: ['C++', 'KiCad', 'Arduino Uno', 'OnShape', '3D Printing'],
       details: {
         overview:
-          'This was the first iteration of our 500g sumo bot, with the most simple sensors and PCB design as a way of learning the fundamentals. ',
+          'This was the first iteration of our 500 g sumo bot. We used a simple sensor array and PCB design to learn the fundamentals.',
         system:
-          'An Arduino Uno controlled motor drivers, line sensors, IR sensors, and a custom PCB powered from a 12V battery with 5V regulation.',
+          'An Arduino Uno controls the motor drivers, line sensors, and IR sensors through a custom PCB. A 12 V battery powers the robot, with 5 V regulation for the electronics.',
         results: [
-          'Top 8 placeement at Florida Makerfaire, in Orlando, Florida.',
+          'Top-eight placement at the Florida Maker Faire in Orlando, Florida.',
         ],
       },
     },
@@ -186,7 +258,12 @@ const ProjectsPage = () => {
 
   const [hoveredItem, setHoveredItem] = useState(publishData[0]);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isTldr, setIsTldr] = useState(false);
   const selectedItem = publishData.find((item) => item.id === selectedItemId);
+  const closeProject = () => {
+    setSelectedItemId(null);
+    setIsTldr(false);
+  };
   const renderParagraphs = (content, className) => (
     <div className={className}>
       {(Array.isArray(content) ? content : [content]).map((paragraph) => (
@@ -195,17 +272,52 @@ const ProjectsPage = () => {
     </div>
   );
 
+  if (selectedItem?.details?.tldr && isTldr) {
+    return (
+      <div className="mx-auto max-w-5xl px-5 py-10 md:py-14">
+        <ProjectToolbar onBack={closeProject} isTldr={isTldr} onToggle={() => setIsTldr(false)} />
+
+        <article>
+          <header className="grid gap-8 border-b border-gray-200 pb-8 md:grid-cols-[minmax(0,1fr)_240px] md:items-start">
+            <div>
+              <p className="font-nav mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">
+                {selectedItem.category} / {selectedItem.date} / TL;DR
+              </p>
+              <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-gray-950 md:text-6xl">
+                {selectedItem.title}
+              </h1>
+            </div>
+            {selectedItem.imageUrl && (
+              <img
+                src={selectedItem.imageUrl}
+                alt={`${selectedItem.title} preview`}
+                className="aspect-square w-full object-cover"
+              />
+            )}
+          </header>
+
+          <section className="grid gap-8 py-10 md:grid-cols-[150px_1fr]">
+            <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">In Short</h2>
+            <div>
+              <p className="max-w-3xl text-xl leading-8 text-gray-800">{selectedItem.details.tldr.summary}</p>
+              <ul className="mt-8 space-y-4 text-gray-700">
+                {selectedItem.details.tldr.highlights.map((highlight) => (
+                  <li key={highlight} className="border-l-2 border-[#6d43a3] pl-5 leading-7">
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        </article>
+      </div>
+    );
+  }
+
   if (selectedItem?.details?.layout === 'blog') {
     return (
       <div className="mx-auto max-w-5xl px-5 py-10 md:py-14">
-        <button
-          type="button"
-          onClick={() => setSelectedItemId(null)}
-          className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
-        >
-          <ArrowLeft size={16} />
-          Back to projects
-        </button>
+        <ProjectToolbar onBack={closeProject} isTldr={isTldr} onToggle={() => setIsTldr(true)} />
 
         <article>
           <header className="border-b border-gray-200 pb-8">
@@ -266,14 +378,7 @@ const ProjectsPage = () => {
   if (selectedItem?.details?.layout === 'case-study') {
     return (
       <div className="mx-auto max-w-6xl px-5 py-10 md:py-14">
-        <button
-          type="button"
-          onClick={() => setSelectedItemId(null)}
-          className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
-        >
-          <ArrowLeft size={16} />
-          Back to projects
-        </button>
+        <ProjectToolbar onBack={closeProject} isTldr={isTldr} onToggle={() => setIsTldr(true)} />
 
         <article>
           <header className="grid gap-8 border-b border-gray-200 pb-8 md:grid-cols-[minmax(0,1fr)_320px] md:items-start">
@@ -346,6 +451,27 @@ const ProjectsPage = () => {
             </ul>
           </section>
 
+          {selectedItem.details.visuals && (
+            <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
+              <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Visuals to Add</h2>
+              <div className="grid gap-6 lg:grid-cols-2">
+                {selectedItem.details.visuals.map((visual) => (
+                  <figure key={visual.title}>
+                    <div className="flex aspect-[4/3] items-center justify-center border border-dashed border-gray-300 bg-gray-50 px-8 text-center">
+                      <div>
+                        <p className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">
+                          Image Placeholder
+                        </p>
+                        <p className="mt-3 text-lg font-bold text-gray-950">{visual.title}</p>
+                      </div>
+                    </div>
+                    <figcaption className="mt-3 text-sm leading-6 text-gray-500">{visual.note}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )}
+
           <section className="grid gap-10 py-10 md:grid-cols-[180px_1fr]">
             <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Limitations</h2>
             <ul className="space-y-4 text-gray-700">
@@ -364,14 +490,12 @@ const ProjectsPage = () => {
   if (selectedItem?.details) {
     return (
       <div className="mx-auto max-w-6xl px-5 py-10 md:py-14">
-        <button
-          type="button"
-          onClick={() => setSelectedItemId(null)}
-          className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
-        >
-          <ArrowLeft size={16} />
-          Back to projects
-        </button>
+        <ProjectToolbar
+          onBack={closeProject}
+          isTldr={isTldr}
+          onToggle={() => setIsTldr(true)}
+          canToggle={Boolean(selectedItem.details.tldr)}
+        />
 
         <header className="border-b border-gray-200 pb-8">
           <p className="font-nav mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#35224f]">
@@ -396,6 +520,24 @@ const ProjectsPage = () => {
             </div>
           </div>
         </section>
+
+        {selectedItem.details.sections && (
+          <section className="border-b border-gray-200 py-10">
+            <div className="space-y-10">
+              {selectedItem.details.sections.map((section, index) => (
+                <div key={section.title} className="grid gap-5 md:grid-cols-[180px_1fr]">
+                  <p className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">
+                    Development {String(index + 1).padStart(2, '0')}
+                  </p>
+                  <div>
+                    <h2 className="text-2xl font-bold tracking-tight text-gray-950">{section.title}</h2>
+                    {renderParagraphs(section.body, 'mt-4 max-w-3xl space-y-4 leading-7 text-gray-700')}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="grid gap-10 border-b border-gray-200 py-10 md:grid-cols-[180px_1fr]">
           <h2 className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">Technical Work</h2>
@@ -455,7 +597,11 @@ const ProjectsPage = () => {
                   type="button"
                   onMouseEnter={() => setHoveredItem(item)}
                   onFocus={() => setHoveredItem(item)}
-                  onClick={() => isClickable && setSelectedItemId(item.id)}
+                  onClick={() => {
+                    if (!isClickable) return;
+                    setIsTldr(false);
+                    setSelectedItemId(item.id);
+                  }}
                   className={`grid w-full gap-3 border-b border-gray-200 py-4 text-left transition-colors md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)] ${
                     isActive ? 'text-[#35224f]' : 'text-gray-700'
                   } ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
@@ -484,6 +630,39 @@ const ProjectsPage = () => {
     </div>
   );
 };
+
+const ProjectToolbar = ({ onBack, isTldr, onToggle, canToggle = true }) => (
+  <div className="mb-10 flex items-center justify-between gap-4">
+    <button
+      type="button"
+      onClick={onBack}
+      className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 transition-colors hover:text-[#35224f]"
+    >
+      <ArrowLeft size={16} />
+      Back to projects
+    </button>
+
+    {canToggle && (
+      <button
+        type="button"
+        role="switch"
+        aria-checked={isTldr}
+        aria-label={`Switch to ${isTldr ? 'big blurb' : 'TL;DR'} view`}
+        onClick={onToggle}
+        className="group inline-flex items-center gap-3 text-sm font-semibold text-[#35224f]"
+      >
+        <span>{isTldr ? 'TL;DR' : 'Big blurb'}</span>
+        <span className="relative h-7 w-14 rounded-full bg-[#6d43a3] shadow-inner transition-colors group-hover:bg-[#593584]">
+          <span
+            className={`absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+              isTldr ? 'translate-x-0' : 'translate-x-7'
+            }`}
+          />
+        </span>
+      </button>
+    )}
+  </div>
+);
 
 const PreviewImage = ({ item }) => {
   if (item.imageUrl) {
