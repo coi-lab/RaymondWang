@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 675" role="img" aria-labelledby="title desc">
+  <title id="title">SECOM class imbalance and model results</title>
+  <desc id="desc">A comparison of 1463 passing samples and 104 failed samples with the final model confusion matrix.</desc>
+  <rect width="900" height="675" fill="#f7f5f2"/>
+  <text x="60" y="70" fill="#35224f" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="2">THE ACCURACY TRAP</text>
+  <text x="60" y="112" fill="#6b6570" font-family="Arial, sans-serif" font-size="18">1,567 manufacturing runs</text>
+  <rect x="60" y="160" width="660" height="74" rx="8" fill="#6d43a3"/>
+  <rect x="720" y="160" width="47" height="74" rx="8" fill="#d36b67"/>
+  <text x="82" y="207" fill="#fff" font-family="Arial, sans-serif" font-size="23" font-weight="700">1,463 PASS</text>
+  <text x="785" y="207" fill="#35224f" font-family="Arial, sans-serif" font-size="20" font-weight="700">104 FAIL</text>
+  <text x="60" y="300" fill="#35224f" font-family="Arial, sans-serif" font-size="20" font-weight="700">CURRENT TEST SET</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="425" y="340" fill="#6b6570" font-size="16">PREDICTED PASS</text>
+    <text x="665" y="340" fill="#6b6570" font-size="16">PREDICTED FAIL</text>
+    <text x="220" y="430" fill="#6b6570" font-size="16">ACTUAL PASS</text>
+    <text x="220" y="550" fill="#6b6570" font-size="16">ACTUAL FAIL</text>
+    <rect x="320" y="365" width="210" height="105" rx="8" fill="#dcd0e8"/>
+    <rect x="560" y="365" width="210" height="105" rx="8" fill="#eee8f3"/>
+    <rect x="320" y="485" width="210" height="105" rx="8" fill="#f4dfdd"/>
+    <rect x="560" y="485" width="210" height="105" rx="8" fill="#d36b67"/>
+    <text x="425" y="425" fill="#35224f" font-size="34" font-weight="700">201</text>
+    <text x="665" y="425" fill="#35224f" font-size="34" font-weight="700">19</text>
+    <text x="425" y="545" fill="#35224f" font-size="34" font-weight="700">10</text>
+    <text x="665" y="545" fill="#fff" font-size="34" font-weight="700">6</text>
+  </g>
+  <text x="60" y="638" fill="#6b6570" font-family="Arial, sans-serif" font-size="17">0.24 failure precision  /  0.38 failure recall  /  0.2488 average precision</text>
+</svg>

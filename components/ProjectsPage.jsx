@@ -22,7 +22,7 @@ const ProjectsPage = () => {
       title: 'Keyboard Switch Price Tracker to an Automated AI Data Pipeline',
       description:
         'A Python-based tracker for monitoring keyboard switch prices, storing historical listings, and experimenting with ML-driven price analysis.',
-      imageUrl: `${basePath}images/keyboard-switch-price-tracker/hoverSwitchWatcher.png`,
+      imageUrl: `${basePath}images/keyboard-switch-price-tracker/hoverKeyboardWatcher.svg`,
       tags: ['Python', 'Data Pipelines', 'Machine Learning'],
       details: {
         layout: 'blog',
@@ -103,70 +103,85 @@ const ProjectsPage = () => {
     },
     {
       id: 'semipipeline',
-      date: 'In Progress',
+      date: 'Summer 2026',
       category: 'Machine Learning',
-      title: 'SemiPipeline: Semiconductor Failure Detection',
+      title: 'From Wafer Failure Detection to an AI Semiconductor Pipeline',
       description:
-        'A notebook-based machine learning project using SECOM manufacturing sensor data to detect rare failed wafer runs with leakage-aware preprocessing, XGBoost, feature selection, and PySpark auditing.',
-      imageUrl: null,
-      tags: ['Python', 'XGBoost', 'scikit-learn', 'PySpark', 'Manufacturing Data'],
+        'A semiconductor data pipeline that cleans SECOM sensor data with PySpark, scores failed-wafer risk with XGBoost, and publishes the results to a Neo4j digital twin that can be queried in plain English.',
+      imageUrl: `${basePath}images/semipipeline/hoverSemiPipeline.svg`,
+      tags: ['Python', 'XGBoost', 'PySpark', 'Neo4j', 'LangChain'],
       details: {
-        layout: 'case-study',
+        layout: 'blog',
         tldr: {
           summary:
-            'I am building a leakage-aware machine learning pipeline that uses 592 SECOM manufacturing measurements to detect rare failed wafer runs. The main challenge is class imbalance: only 104 of 1,567 examples are failures.',
+            'I built an end-to-end semiconductor data pipeline that cleans 592 SECOM sensor measurements, predicts failed-wafer risk with XGBoost, sends scored runs into a Neo4j digital twin, and lets a user question that graph with natural language.',
           highlights: [
-            'Cleaning removed 144 constant or heavily missing sensor columns, leaving 448 features; PySpark reproduced the same result as pandas.',
-            'The pipeline uses train-only preprocessing, KNN imputation, scaling, feature selection, class-weighted XGBoost, and validation-based threshold tuning.',
-            'Unlike the 93%-accurate baseline that detected no failures, the current test result catches failures with 0.24 precision and 0.38 recall.',
-            'Next steps include reusable scripts, model comparisons, safer PySpark row alignment, and cost-based threshold selection.',
+            'A 93%-accurate baseline predicted that every wafer passed, teaching me why accuracy is the wrong headline metric for only 104 failures out of 1,567 runs.',
+            'Leakage-aware preprocessing, feature selection, class-weighted XGBoost, and threshold tuning produced 0.24 failure precision and 0.38 recall on an isolated test set.',
+            'PySpark reproduced the pandas cleanup, removing 144 dead or heavily missing columns and reducing the data from 592 to 448 columns.',
+            'The saved model scores wafer runs before Neo4j stores machines, wafers, risk scores, and telemetry; Gemini and LangChain then translate plain-English questions into Cypher.',
           ],
         },
-        overview:
-          'This project began with a question: can hundreds of semiconductor sensor readings warn us when a wafer run is likely to fail? I am using the SECOM dataset to work through that question one stage at a time. The difficult part is not getting a high accuracy score. Because only 104 of the 1,567 runs failed, a model can appear accurate by predicting that every run will pass. The real goal is to catch useful failure signals without creating an overwhelming number of false alarms.',
-        researchQuestion:
-          'Can sensor data from semiconductor manufacturing runs be used to detect failed wafer runs with useful precision and recall, despite class imbalance and missing sensor values?',
-        methodology: [
-          'First came the data cleanup. I combined the raw sensor readings with their pass/fail labels, converted the labels to 0 and 1, and audited the hundreds of anonymous sensor columns. Removing columns that were constant or more than 50% empty reduced the dataset from 592 to 448 columns.',
-          'Next, I rebuilt the modeling workflow to reduce data leakage. The data is separated into training, validation, and test sets before preprocessing, so the imputer, scaler, and feature selector learn only from the training data.',
-          'For the current model, I use MinMaxScaler, KNNImputer, feature selection, and XGBoost in a scikit-learn Pipeline. Class weighting helps the model pay attention to rare failures, while average precision gives a more honest view of performance than accuracy alone.',
-          'I also tune the decision threshold on validation data. Instead of accepting the default 0.5 cutoff, I compare precision and recall to find a more useful balance between missed failures and false alarms.',
-          'Finally, I started reproducing the cleaning workflow in PySpark. The distributed audit found the same 144 dead or heavily missing columns and reached the same cleaned shape as the pandas workflow.',
+        intro: [
+          'The original idea was to answer one question: can hundreds of sensor readings tell us when a semiconductor wafer run is going to fail?',
+          'I used the SECOM dataset, which has 1,567 manufacturing runs and 592 anonymous sensor measurements. The catch is that only 104 runs failed. That imbalance made this look like a normal classification project right up until my first model got 93% accuracy by predicting zero failures.',
+          'So the project changed. It became less about making one model and more about building the full path around it: cleaning the data without leakage, choosing a useful failure threshold, reproducing the work in PySpark, publishing risk scores to a Neo4j digital twin, and finally asking the graph questions in plain English.',
+          'Let us begin with the result that looked good and was actually useless.',
         ],
-        metrics: [
-          ['Rows', '1,567'],
-          ['Raw columns', '592'],
-          ['Cleaned columns', '448'],
-          ['Fail examples', '104'],
-          ['Test accuracy', '0.88'],
-          ['Fail precision / recall', '0.24 / 0.38'],
-          ['Average precision', '0.2488'],
+        conclusion: [
+          'This project started as a machine learning notebook, but it became a lesson in how much work has to surround a model before its output is actually useful.',
+          'The biggest takeaway was that a technically high score can still be the wrong result. The first model had better accuracy than the current one, but the current pipeline is the one that actually catches failures. It also produces a risk score that can move into another system instead of staying trapped in a notebook.',
+          'The project is still experimental. The model only has 104 failure examples to learn from, the graph upload is a 10-row demonstration, and the Spark row alignment needs a safer replacement for monotonically_increasing_id(). Next I want to move the repeated notebook work into reusable scripts, compare more models, and choose thresholds based on the real cost of missed failures versus false alarms.',
+          'For now, on to the next project ->',
         ],
-        results: [
-          'The first XGBoost baseline reached about 93% accuracy, which looked promising until I saw that it predicted zero failures. That result made the central lesson of the project clear: accuracy is misleading when one class is this rare.',
-          'The current leakage-aware pipeline has started catching failed runs. On the isolated test set, it reached 0.24 failure-class precision, 0.38 recall, a 0.29 F1-score, and 0.2488 average precision. These numbers are still modest, but they represent real progress over a model that never detects a failure.',
-          'The preprocessing, feature selection, threshold tuning, and XGBoost model are now stored as a single scikit-learn Pipeline. I serialized the current version as secom_xgboost_production_v1.pkl so it can be loaded for future experiments.',
-          'The project is not finished. My next steps are to move repeated notebook code into reusable scripts, compare additional models, improve PySpark row alignment, and define the real cost tradeoff between a false alarm and a missed wafer failure.',
-        ],
-        visuals: [
+        sections: [
           {
-            title: 'SECOM class balance and missing-data audit',
-            note: 'Add a chart showing the 1,463 pass samples versus 104 failure samples, together with the sensor missing-value distribution.',
+            eyebrow: '93% accurate, 0% useful',
+            title: 'When Accuracy Lied to Me',
+            body: [
+              'My first XGBoost baseline reached about 93% accuracy. For a moment, that looked like the project was working. Then I checked the classification report and found that the model had predicted every run as a pass. It missed all of the failures.',
+              'The problem was hiding in the class balance. There are 1,463 passing runs and only 104 failed runs, so a model can ignore the event I care about and still receive a good accuracy score.',
+              'That changed which metrics I watched. I moved toward failure-class precision and recall, F1-score, and average precision. The current isolated test result has 0.24 precision, 0.38 recall, a 0.29 F1-score, and 0.2488 average precision. Those numbers are modest, but catching 6 of 16 failures is more useful than confidently catching none.',
+            ],
+            imageUrl: `${basePath}images/semipipeline/classImbalance.svg`,
+            caption: 'Why the 93% baseline was misleading: pass samples dominate the SECOM dataset, while the current test confusion matrix shows 6 detected failures and 10 missed failures.',
           },
           {
-            title: 'Validation precision-recall curve',
-            note: 'Add the threshold-tuning plot used to choose the current balance between failure precision and recall.',
+            eyebrow: 'the hard stuff (data leakage)',
+            title: 'Cleaning the Sensors Without Seeing the Answers',
+            body: [
+              'SECOM contains hundreds of anonymous sensor columns, many with missing values. I removed columns that were more than 50% empty and columns that never changed, which reduced the data from 592 columns to 448. Then KNN imputation fills the remaining gaps and MinMaxScaler puts the measurements on comparable scales.',
+              'My earlier experiments taught me that the order matters. If an imputer, scaler, or feature selector learns from the complete dataset, information from validation and test rows can quietly leak into training. I rebuilt the workflow so the split happens first and every preprocessing step is fitted only on training data.',
+              'I wrapped the imputer, scaler, feature selector, and class-weighted XGBoost model inside one scikit-learn Pipeline. Grid search uses average precision, SelectFromModel keeps 20 physical sensors in the current champion, and validation precision-recall behavior sets the decision threshold to 0.0792 instead of blindly using 0.5.',
+              'The complete pipeline is serialized as secom_xgboost_production_v1.pkl. That means later notebooks can load the exact same preprocessing and model logic instead of trying to recreate it cell by cell.',
+            ],
+            imageUrl: `${basePath}images/semipipeline/leakageAwarePipeline.svg`,
+            caption: 'The leakage-aware training order. Validation and test data stay isolated while preprocessing, feature selection, and XGBoost learn from the training split.',
           },
           {
-            title: 'Current model results',
-            note: 'Add a confusion matrix or notebook result showing how many failed wafer runs the current pipeline catches and misses.',
+            eyebrow: 'from pandas to the big data stuff',
+            title: 'Rebuilding the Data Flow with PySpark',
+            body: [
+              'Once the model pipeline was saved, I wanted to move beyond a pandas-only experiment. The PySpark notebook ingests the raw sensor and label files, converts the pass/fail encoding, and audits each distributed column for missing or constant data.',
+              'The Spark cleanup found the same 144 dead or heavily missing columns as the pandas workflow and reached the same cleaned shape: 1,567 rows by 448 columns. That matching result became a useful check that the distributed logic was not silently changing the dataset.',
+              'Next, the notebook loads the saved scikit-learn pipeline and generates ML risk scores from the cleaned Spark data. Right now I bring a small sample into pandas for inference, so this is a bridge between distributed cleanup and local model scoring rather than a fully distributed model-serving system.',
+              'There is also one shortcut I still need to fix. The experimental row alignment uses monotonically_increasing_id(), which is convenient but not a safe long-term key for joining labels and sensor rows. A stable source row identifier is the next version of this step.',
+            ],
+            imageUrl: `${basePath}images/semipipeline/sparkToScore.svg`,
+            caption: 'The current inference path: distributed cleanup in PySpark feeds a saved scikit-learn/XGBoost pipeline and produces a risk score for each sampled wafer run.',
           },
-        ],
-        limitations: [
-          'The dataset is highly imbalanced, with only 104 failure examples.',
-          'The saved model is a learning artifact, not a production manufacturing system.',
-          'Some exploratory notebook cells use older approaches that were later improved.',
-          'The PySpark notebook still needs safer row alignment instead of relying on monotonically_increasing_id().',
+          {
+            eyebrow: 'making the model talk',
+            title: 'A Digital Twin You Can Question',
+            body: [
+              'A risk score is more interesting when it is connected to the process that produced it. I used Neo4j Aura to make a small semiconductor digital twin: a Machine processes a Wafer, and that Wafer generates Telemetry. Each wafer node stores its timestamp, actual result, and ML risk score while its telemetry node stores the surviving sensor readings.',
+              'The current demonstration uploads 10 scored rows. It is intentionally small while I work out the graph structure and credentials, but it proves that the model output can leave the notebook and become part of a queryable manufacturing system.',
+              'For the final layer, I connected LangChain, Neo4j, and Gemini. GraphCypherQAChain reads the graph schema, turns a natural-language question into Cypher, runs the query, and returns an answer. In the notebook demo, I asked which wafer from Etch_Chamber_A had the highest risk. The chain found WAFER_2 with a score of 0.9988417029380798 and returned several attached sensor readings.',
+              'This part also came with a security lesson. The chain requires allow_dangerous_requests=True, so a real deployment should use separate, read-only Neo4j credentials with the minimum permissions instead of handing an LLM a fully privileged database account.',
+            ],
+            imageUrl: `${basePath}images/semipipeline/digitalTwin.svg`,
+            caption: 'The Neo4j graph structure and question-answering layer used by the 10-wafer demonstration.',
+          },
         ],
       },
     },
