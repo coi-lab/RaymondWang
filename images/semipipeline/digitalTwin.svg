@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 675" role="img" aria-labelledby="title desc">
+  <title id="title">Neo4j semiconductor digital twin</title>
+  <desc id="desc">Machine, wafer, and telemetry graph nodes connected to a natural language question and generated Cypher.</desc>
+  <rect width="900" height="675" fill="#35224f"/>
+  <text x="55" y="68" fill="#fff" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="2">ASKING THE DIGITAL TWIN</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <circle cx="145" cy="220" r="82" fill="#f6f1e8"/>
+    <circle cx="450" cy="220" r="82" fill="#d36b67"/>
+    <circle cx="755" cy="220" r="82" fill="#dcd0e8"/>
+    <text x="145" y="211" fill="#35224f" font-size="20" font-weight="700">MACHINE</text>
+    <text x="145" y="239" fill="#6b6570" font-size="14">Etch_Chamber_A</text>
+    <text x="450" y="204" fill="#fff" font-size="20" font-weight="700">WAFER</text>
+    <text x="450" y="232" fill="#fff" font-size="14">result + risk score</text>
+    <text x="450" y="254" fill="#fff" font-size="14">+ timestamp</text>
+    <text x="755" y="211" fill="#35224f" font-size="20" font-weight="700">TELEMETRY</text>
+    <text x="755" y="239" fill="#6b6570" font-size="14">448 sensors</text>
+    <path d="M227 220h141M532 220h141" stroke="#a98acb" stroke-width="6"/>
+    <path d="M355 209l15 11-15 11M660 209l15 11-15 11" fill="none" stroke="#a98acb" stroke-width="6"/>
+    <text x="298" y="198" fill="#e9deef" font-size="13">PROCESSED</text>
+    <text x="603" y="190" fill="#e9deef" font-size="13">GENERATED</text>
+    <text x="603" y="208" fill="#e9deef" font-size="13">TELEMETRY</text>
+    <rect x="55" y="374" width="350" height="145" rx="10" fill="#f6f1e8"/>
+    <text x="230" y="414" fill="#35224f" font-size="17" font-weight="700">PLAIN-ENGLISH QUESTION</text>
+    <text x="230" y="451" fill="#6b6570" font-size="15">Which wafer has the highest</text>
+    <text x="230" y="475" fill="#6b6570" font-size="15">ML risk score?</text>
+    <rect x="495" y="374" width="350" height="145" rx="10" fill="#6d43a3" stroke="#a98acb" stroke-width="2"/>
+    <text x="670" y="414" fill="#fff" font-size="17" font-weight="700">GEMINI → CYPHER → NEO4J</text>
+    <text x="670" y="451" fill="#eee8f3" font-size="15">WAFER_2</text>
+    <text x="670" y="475" fill="#eee8f3" font-size="15">risk: 0.9988417029380798</text>
+    <path d="M405 447h90" stroke="#d36b67" stroke-width="6"/>
+    <path d="M482 436l15 11-15 11" fill="none" stroke="#d36b67" stroke-width="6"/>
+    <text x="450" y="573" fill="#e9deef" font-size="16">10-row proof of concept · Neo4j Aura · LangChain · Gemini</text>
+  </g>
+</svg>
