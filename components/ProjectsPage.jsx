@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
 const ProjectsPage = () => {
@@ -16,8 +16,94 @@ const ProjectsPage = () => {
       tags: ['Robotics', 'Autonomous Control', 'Sumo'],
     },
     {
-      id: 'keyboard-price-watch',
+      id: 'lcs-fantasy-predictor',
       date: 'In Progress',
+      category: 'Machine Learning',
+      title: 'LCS Fantasy Predictor and Lineup Optimizer',
+      description:
+        'An experimental Python pipeline and dashboard for predicting weekly LCS Fantasy scores, champion choices, and legal six-slot rosters.',
+      imageUrl: `${basePath}images/lcs-fantasy/hoverLcsFantasy.png`,
+      tags: ['Python', 'Machine Learning', 'Data Pipelines', 'Optimization'],
+      details: {
+        layout: 'blog',
+        tldr: {
+          summary:
+            'I am building a point-in-time LCS Fantasy system that turns professional match data and official market snapshots into weekly player projections, champion recommendations, and budget-valid six-slot lineups.',
+          highlights: [
+            'The pipeline keeps features behind roster lock and uses chronological evaluation so future games do not leak into earlier predictions.',
+            'A sequential draft model tracks picks, bans, draft order, role eligibility, and the champion pool removed by Fearless rules.',
+            'The lineup optimizer checks legal TOP, JGL, MID, BOT, SUP, and coach combinations under the current budget and includes organization-variety bonuses inside the search.',
+            'A local dashboard separates official prices from experimental estimates and preserves weekly snapshots for later scoring and model review.',
+          ],
+        },
+        intro: [
+          'The original goal was to answer a fun question: can public match history help me build a better LCS Fantasy roster each week?',
+          'That quickly became three connected problems. I needed to estimate player and coach scores, predict which champions could earn the strongest fantasy multiplier, and then find the best legal six-slot roster without breaking the budget.',
+          'The difficult part is time. Esports data changes after every game, but a useful prediction must behave as if it were still standing at roster lock. That means every statistic, market price, draft state, and opponent feature needs a clear point-in-time boundary.',
+          'The project is still in active development. The current system can build draft data, generate weekly recommendations, search legal rosters, and publish the results to an inspectable dashboard. I am continuing to capture official market rounds and test completed-week predictions.',
+        ],
+        conclusion: [
+          'This project started as a fantasy calculator, but it became a larger lesson in time-aware machine learning, data provenance, draft modeling, and constrained optimization.',
+          'The biggest takeaway is that producing a prediction is the easy part. The harder work is proving that the model only knew what would have been available at roster lock and making every estimate understandable after the live market changes.',
+          'This is also my first project working extensively with client-side agents such as Google Antigravity, or AGY. It has been a completely different experience from working directly with Codex. AGY needs a much more explicit instruction and documentation system that describes the project rules, modeling boundaries, validation process, and normal operating workflow in enough detail to keep longer tasks on track.',
+          'To combine the strengths of both tools while keeping token usage under control, I use Codex to inspect the repository, compress the relevant context, and write focused prompts for AGY. AGY can then carry out the larger client-side workflow with a clearer definition of what to change, what evidence is required, and which project rules must be preserved.',
+          'I am actively developing this system. The next work is to capture more official price rounds, improve player uncertainty and matchup simulation, strengthen starter coverage, and keep testing model changes on unseen chronological weeks before they enter the weekly workflow.',
+        ],
+        sections: [
+          {
+            eyebrow: 'no peeking into next week',
+            title: 'Building a Point-in-Time Data Pipeline',
+            body: [
+              'The pipeline begins with Oracle\'s Elixir player-game and team-game data. Player rows provide scoring inputs and the champion played, while team rows preserve the ordered picks and bans needed to reconstruct each draft.',
+              'I use chronological evaluation instead of random train and test splits. In plain language, every simulated fantasy week can learn only from games that happened before its roster lock. Champion-model fitting uses 2020 through 2025, while 2026 remains outside the fitting window.',
+              'Official market snapshots are stored as immutable JSON and CSV files because the live endpoint exposes the current market rather than a complete historical archive. Whenever an official price exists, it overrides the experimental historical estimate.',
+            ],
+            imageUrl: null,
+            placeholderLabel: 'Point-in-time pipeline diagram',
+            caption: 'Placeholder for the ingestion, roster-lock boundary, feature, prediction, and dashboard data flow.',
+          },
+          {
+            eyebrow: 'picks, bans, and fearless',
+            title: 'Reconstructing the Champion Draft',
+            body: [
+              'Champion prediction is not just a popularity ranking. A recommendation needs to account for player comfort, the current LCS meta, nearby international evidence, role eligibility, public bans, draft order, and champions already removed by Fearless rules.',
+              'The draft builder converts each game into a canonical game record and a sequence of individual pick and ban actions. Each action stores only the draft state known before that choice, which gives the model an auditable view of what was still available.',
+              'Map side and draft order are modeled separately because Blue side does not always pick first. Source conflicts are also kept visible instead of silently deleting an observed action that disagrees with the reconstructed rules.',
+            ],
+            imageUrl: null,
+            placeholderLabel: 'Champion draft state',
+            caption: 'Placeholder for an ordered pick-and-ban board with Fearless champion availability.',
+          },
+          {
+            eyebrow: 'six slots, one budget',
+            title: 'From Player Projections to a Legal Roster',
+            body: [
+              'The player model combines historical fantasy scoring, current form, known opponents, team win probability, and role-specific behavior. The champion model then adds an expected multiplier contribution for each projected starter.',
+              'The optimizer checks every eligible combination of one TOP, JGL, MID, BOT, SUP, and coach under the current gold budget. It evaluates the complete organization-variety ladder inside the objective so a diverse roster can be compared fairly with a more individually expensive one.',
+              'I also keep raw projected points visible beside a separate matchup-risk adjustment. This prevents the optimizer from hiding why a roster moved in the ranking when it contains players facing one another in the same match.',
+            ],
+            imageUrl: null,
+            placeholderLabel: 'Lineup optimizer results',
+            caption: 'Placeholder for the ranked six-slot lineup view with prices, projected points, and variety bonuses.',
+          },
+          {
+            eyebrow: 'make the model explain itself',
+            title: 'Dashboard, Audits, and the Feedback Loop',
+            body: [
+              'The local dashboard brings player trends, market prices, champion options, matchup context, and saved weekly lineups into one review surface. Official prices and experimental estimates receive different labels so an inferred history cannot be mistaken for captured market data.',
+              'Each optimized week is saved as a self-contained snapshot. That matters because the market, schedule, and predictions change over time; preserving the old inputs makes it possible to score a completed round without accidentally reviewing it through a later model state.',
+              'Unit tests cover the major ingestion, feature, draft, prediction, and optimization paths. Separate analysis reports record scoring checks, model ablations, and limitations so a more complicated feature stays experimental unless chronological evidence supports it.',
+            ],
+            imageUrl: null,
+            placeholderLabel: 'Weekly dashboard',
+            caption: 'Placeholder for the player trends, champion recommendations, and completed-week audit views.',
+          },
+        ],
+      },
+    },
+    {
+      id: 'keyboard-price-watch',
+      date: 'Summer 2026',
       category: 'Coding Project',
       title: 'Keyboard Switch Price Tracker to an Automated AI Data Pipeline',
       description:
@@ -358,7 +444,20 @@ const ProjectsPage = () => {
             {selectedItem.details.sections.map((section) => (
               <section key={section.title} className="grid gap-8 py-10 md:grid-cols-[1fr_1.15fr] md:items-start">
                 <figure className="md:sticky md:top-20">
-                  <img src={section.imageUrl} alt={section.title} className="aspect-[4/3] w-full object-contain bg-gray-50" />
+                  {section.imageUrl ? (
+                    <img src={section.imageUrl} alt={section.title} className="aspect-[4/3] w-full object-contain bg-gray-50" />
+                  ) : (
+                    <div className="flex aspect-[4/3] w-full items-center justify-center border border-dashed border-gray-300 bg-gray-50 px-8 text-center">
+                      <div>
+                        <p className="font-nav text-xs font-semibold uppercase tracking-[0.18em] text-[#35224f]">
+                          Image Placeholder
+                        </p>
+                        <p className="mt-3 text-lg font-bold text-gray-950">
+                          {section.placeholderLabel || section.title}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                   <figcaption className="mt-3 text-sm leading-6 text-gray-500">{section.caption}</figcaption>
                 </figure>
                 <div>
@@ -595,13 +694,13 @@ const ProjectsPage = () => {
 
       <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(200px,24vw)] xl:grid-cols-[minmax(0,1fr)_320px]">
         <section>
-          <div className="font-nav grid gap-3 pb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)]">
+          <div className="font-nav grid gap-3 px-4 pb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)]">
             <div>Date</div>
             <div>Category</div>
             <div>Title</div>
           </div>
 
-          <div className="border-t border-gray-200">
+          <div className="space-y-1 rounded-xl bg-gray-50/70 p-1">
             {publishData.map((item) => {
               const isActive = hoveredItem.id === item.id;
               const isClickable = Boolean(item.details);
@@ -617,9 +716,9 @@ const ProjectsPage = () => {
                     setIsTldr(false);
                     setSelectedItemId(item.id);
                   }}
-                  className={`grid w-full gap-3 border-b border-gray-200 py-4 text-left transition-colors md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)] ${
-                    isActive ? 'text-[#35224f]' : 'text-gray-700'
-                  } ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}
+                  className={`grid w-full gap-3 rounded-lg px-3 py-4 text-left transition-[background-color,color,box-shadow,transform] duration-200 ease-out hover:bg-[#eee5f7] focus-visible:bg-[#eee5f7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a98acb]/50 md:grid-cols-[110px_150px_minmax(0,1fr)] lg:grid-cols-[130px_180px_minmax(0,1fr)] ${
+                    isActive ? 'bg-[#f4eff9] text-[#35224f] shadow-sm' : 'text-gray-700'
+                  } ${isClickable ? 'cursor-pointer hover:-translate-y-px' : 'cursor-default'}`}
                 >
                   <div className="text-sm leading-6 text-gray-600 md:text-[15px]">
                     {item.date}
@@ -680,19 +779,45 @@ const ProjectToolbar = ({ onBack, isTldr, onToggle, canToggle = true }) => (
 );
 
 const PreviewImage = ({ item }) => {
+  const [visibleItem, setVisibleItem] = useState(item);
+  const [previousItem, setPreviousItem] = useState(null);
+  const visibleItemRef = useRef(item);
+
+  useEffect(() => {
+    if (item.id === visibleItemRef.current.id) return undefined;
+
+    setPreviousItem(visibleItemRef.current);
+    visibleItemRef.current = item;
+    setVisibleItem(item);
+
+    const transitionTimer = window.setTimeout(() => {
+      setPreviousItem(null);
+    }, 220);
+
+    return () => window.clearTimeout(transitionTimer);
+  }, [item]);
+
+  return (
+    <div className="relative aspect-square w-full max-w-[min(100%,20rem)] overflow-hidden rounded-xl bg-[#f4eff9] shadow-sm">
+      {previousItem && (
+        <div className="project-preview-exit absolute inset-0">
+          <ProjectPreviewVisual item={previousItem} />
+        </div>
+      )}
+      <div key={visibleItem.id} className="project-preview-enter absolute inset-0">
+        <ProjectPreviewVisual item={visibleItem} />
+      </div>
+    </div>
+  );
+};
+
+const ProjectPreviewVisual = ({ item }) => {
   if (item.imageUrl) {
-    return (
-      <img
-        key={item.id}
-        src={item.imageUrl}
-        alt={item.title}
-        className="aspect-square w-full max-w-[min(100%,20rem)] object-cover opacity-100 transition-opacity duration-300"
-      />
-    );
+    return <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />;
   }
 
   return (
-    <div className="flex aspect-square w-full max-w-[min(100%,20rem)] items-center justify-center bg-[#35224f]">
+    <div className="flex h-full w-full items-center justify-center bg-[#35224f]">
       <div className="font-nav text-center text-xs font-semibold uppercase tracking-[0.24em] text-white">
         NO VISUAL DATA
       </div>

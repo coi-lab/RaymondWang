@@ -2,7 +2,7 @@ import React from 'react';
 import { Download, ExternalLink } from 'lucide-react';
 const ResumePage = () => {
   const basePath = import.meta.env.BASE_URL;
-  const resumeUrl = `${basePath}documents/Raymond_General_Resume.pdf`;
+  const resumeUrl = `${basePath}documents/Raymond_Wang_General_Resume_2026.pdf`;
 
   return (
     <div className="mx-auto max-w-5xl px-5 pb-12 pt-6 md:pb-16 md:pt-8">
@@ -20,7 +20,7 @@ const ResumePage = () => {
           </a>
           <a
             href={resumeUrl}
-            download="Raymond_Wang_Resume.pdf"
+            download="Raymond_Wang_General_Resume_2026.pdf"
             className="inline-flex items-center gap-2 px-0 py-2 text-sm font-semibold text-[#35224f] underline underline-offset-4 transition-opacity hover:opacity-70"
           >
             <Download size={16} />

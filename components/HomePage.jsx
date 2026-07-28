@@ -59,9 +59,6 @@ const HomePage = () => {
               <div className="font-nav text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
                 DOC-REF: RW-2028
               </div>
-              <div className="font-nav text-right text-[10px] font-semibold uppercase tracking-[0.18em] text-gray-500">
-                STATUS: ACTIVE
-              </div>
             </div>
 
             <div className="mt-4 flex flex-col items-center text-center">
