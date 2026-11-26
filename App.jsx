@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import ResumePage from './components/ResumePage';
+import EngineeringPortfolioPage from './components/EngineeringPortfolioPage';
 import GoalsPage from './components/GoalsPage';
 import ProjectsPage from './components/ProjectsPage';
 import ExperiencePage from './components/ExperiencePage';
@@ -14,6 +15,7 @@ const pages = [
   { id: 'about', label: 'About', component: AboutPage },
   { id: 'resume', label: 'Resume', component: ResumePage },
   { id: 'projects', label: 'Projects', component: ProjectsPage },
+  { id: 'engineering-portfolio', label: 'Engineering Portfolio', component: EngineeringPortfolioPage },
   { id: 'achievements', label: 'Achievements', component: AchievementsPage },
 ];
 
